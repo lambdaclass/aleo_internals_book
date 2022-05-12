@@ -421,3 +421,103 @@ for
 // Ensure the proof is valid under the deprecated PoSW parameters.
 proof.verify(&self.verifying_key, inputs)
 ```
+
+## LedgerProof
+It is proof of inclusion in the ledger.
+
+```rust
+pub struct LedgerProof<N: Network> {
+    ledger_root: N::LedgerRoot,
+    ledger_root_inclusion_proof: MerklePath<N::LedgerRootParameters>,
+    record_proof: RecordProof<N>,
+}
+```
+
+The `LedgerProof` is just a struct used to group up a ledger root inclusion proof and a record proof.The constructor ensures that the block hash belongs to that ledger by calling `RecordProof::verify` on the ledger root inclusion proof.
+
+Another interesting method is the `new_dummy` method:
+
+```rust
+/// Create a new dummy ledger proof.
+pub fn new_dummy(local_proof: LocalProof<N>) -> Result<Self> {
+    Ok(Self { record_proof: RecordProof::new_dummy(local_proof)?, ..Default::default() })
+}
+```
+
+The rest of the methods delegate everything to `RecordProof` and `MerklePath`(the ledger root inclusion proof). So let's continue with those, shall we?
+
+## RecordProof
+It represents a proof of inclusion for a record in a block.
+
+```rust
+pub struct RecordProof<N: Network> {
+    block_hash: N::BlockHash,
+    previous_block_hash: N::BlockHash,
+    block_header_root: N::BlockHeaderRoot,
+    block_header_inclusion_proof: MerklePath<N::BlockHeaderRootParameters>,
+    transactions_root: N::TransactionsRoot,
+    transactions_inclusion_proof: MerklePath<N::TransactionsRootParameters>,
+    local_proof: LocalProof<N>,
+}
+```
+
+As shown in the `LedgerProof` section, it provides a `new_dummy` method, which given a `LocalProof`, it initializes a new dummy instance of `RecordProof`
+
+It provides getters for its members, and some for their members as well (e.g: `transaction_inclusion_proof` returns `self.local_proof.transaction_inclusion_proof()`). Also, `ToBytes` and `FromBytes` traits are implemented.
+
+The constructor is the deepest method:
+
+```rust
+///
+/// Initializes a new instance of `RecordProof`.
+///
+pub fn new(
+    block_hash: N::BlockHash,
+    previous_block_hash: N::BlockHash,
+    block_header_root: N::BlockHeaderRoot,
+    block_header_inclusion_proof: MerklePath<N::BlockHeaderRootParameters>,
+    transactions_root: N::TransactionsRoot,
+    transactions_inclusion_proof: MerklePath<N::TransactionsRootParameters>,
+    local_proof: LocalProof<N>,
+) -> Result<Self> {
+    let transaction_id = local_proof.transaction_id();
+    ensure!(
+        transactions_inclusion_proof.verify(&transactions_root, &transaction_id)?,
+        "Transaction {} does not belong to transactions root {}",
+        transaction_id,
+        transactions_root
+    );
+
+    ensure!(
+        block_header_inclusion_proof.verify(&block_header_root, &transactions_root)?,
+        "Transactions root {} does not belong to block header {}",
+        transactions_root,
+        block_header_root
+    );
+
+    let candidate_block_hash: N::BlockHash =
+        N::block_hash_crh().hash_bytes(&to_bytes_le![previous_block_hash, block_header_root]?)?.into();
+    ensure!(
+        candidate_block_hash == block_hash,
+        "Candidate block hash {} does not match given block hash {}",
+        candidate_block_hash,
+        block_hash
+    );
+
+    Ok(Self {
+        block_hash,
+        previous_block_hash,
+        block_header_root,
+        block_header_inclusion_proof,
+        transactions_root,
+        transactions_inclusion_proof,
+        local_proof,
+    })
+}
+```
+
+Succintly it checks the following things before returning the struct. 
+
+1. It validates that the transaction belongs in the transactions root by verifying the inclusion proof.
+2. It validates the transactions root belongs to the block header by verifying the block header inclusion proof.
+3. It validates the constructed block hash matches with the hash between the previous block hash and the block header root.
