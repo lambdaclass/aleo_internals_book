@@ -53,7 +53,6 @@ pub fn add_unconfirmed_transaction(&mut self, transaction: &Transaction<N>) -> R
             "Transaction contains a commitment already in existence"
         );
     }
-
     // Attempt to add the transaction into the memory pool.
     self.memory_pool.add_transaction(transaction)?;
 
@@ -155,10 +154,8 @@ i[Transitions::to_local_proof] --> l[Transitions::to_transition_inclusion_proof]
 
 ```
 
-The last function to see is `assert_retarget`, which is used to compute the difficulty of the next block to be mined:
-
+The last function is `assert_retarget`, which is used to compute the difficulty of the next block to be mined, and is based on the difficulty retarget algorithm from the [zcash protocol](https://www.reference.cash/protocol/forks/2020-11-15-asert).
 ```rust 
-/// ASERT difficulty retarget algorithm based on https://www.reference.cash/protocol/forks/2020-11-15-asert.
 ///     T_{i+1} = T_anchor * 2^((S - B * N) / tau).
 ///     T_anchor = Anchor target of a specific block height
 ///     B = Expected time per block.
@@ -167,92 +164,6 @@ The last function to see is `assert_retarget`, which is used to compute the diff
 ///     tau = The half life of the algorithm. For every `tau` seconds ahead of
 ///           schedule a block’s timestamp becomes, the difficulty doubles.
 /// To avoid use of floating points, we use fixed-point arithmetic.
-fn asert_retarget(
-    anchor_timestamp: i64,
-    anchor_difficulty_target: u64,
-    anchor_block_height: u32,
-    block_timestamp: i64,
-    block_height: u32,
-    target_block_time: i64,
-) -> u64 {
-    // Compute the difference in block time elapsed, defined as:
-    // (block_timestamp - anchor_timestamp) - target_block_time * number_of_blocks_elapsed.
-    let drift = {
-        // Determine the block time elapsed (in seconds) since the anchor block.
-        // Note: This operation includes a safety check for a repeat timestamp.
-        let block_time_elapsed = core::cmp::max(block_timestamp.saturating_sub(anchor_timestamp), 1);
-
-        // Determine the number of blocks since the anchor.
-        // Note: This operation includes a safety check for a repeat block height.
-        let number_of_blocks_elapsed = core::cmp::max(block_height.saturating_sub(anchor_block_height), 1);
-
-        // Determine the expected block time elapsed (in seconds) since the anchor block.
-        let expected_block_time_elapsed = target_block_time.saturating_mul(number_of_blocks_elapsed as i64);
-
-        // Determine the difference in block time elapsed (in seconds).
-        // Note: This operation must be *standard subtraction* to account for faster blocks.
-        block_time_elapsed - expected_block_time_elapsed
-    };
-
-    // Constants used for fixed point arithmetic.
-    const RBITS: u32 = 16;
-    const RADIX: u128 = 1 << RBITS;
-
-    // The half life for the expected duration in doubling the difficulty target.
-    const TAU: u128 = 64_800; // 64,800 seconds = 18 hours
-
-    // Compute the exponent factor, and decompose it into integral & fractional parts for fixed point arithmetic.
-    let (integral, fractional) = {
-        // Calculate the exponent factor.
-        let exponent = (RADIX as i128).saturating_mul(drift as i128) / (TAU as i128);
-
-        // Decompose into the integral and fractional parts.
-        let integral = exponent >> RBITS;
-        let fractional = (exponent - (integral << RBITS)) as u128;
-        assert!(fractional < RADIX, "Ensure fractional part is within fixed point size");
-        assert_eq!(exponent, integral * (RADIX as i128) + fractional as i128);
-
-        (integral, fractional)
-    };
-
-    // Approximate the fractional multiplier as 2^RBITS * 2^fractional, where:
-    // 2^x ~= (1 + 0.695502049*x + 0.2262698*x**2 + 0.0782318*x**3)
-    let fractional_multiplier = RADIX
-        + ((195_766_423_245_049_u128 * fractional
-            + 971_821_376_u128 * fractional.pow(2)
-            + 5_127_u128 * fractional.pow(3)
-            + 2_u128.pow(RBITS * 3 - 1))
-            >> (RBITS * 3));
-
-    // Cast the anchor difficulty target from a u64 to a u128.
-        // The difficulty target must allow for leading zeros to account for overflows;
-        // an additional 64-bits for the leading zeros suffices.
-        let candidate_difficulty_target = (anchor_difficulty_target as u128).saturating_mul(fractional_multiplier);
-
-        // Calculate the new difficulty.
-        // Shift the target to multiply by 2^(integer) / RADIX.
-        let shifts = integral - RBITS as i128;
-        let mut candidate_difficulty_target = if shifts < 0 {
-            match candidate_difficulty_target.checked_shr((-shifts) as u32) {
-                Some(target) => core::cmp::max(target, 1),
-                None => 1,
-            }
-        } else {
-            match candidate_difficulty_target.checked_shl(shifts as u32) {
-                Some(target) => core::cmp::max(target, 1),
-                None => u64::MAX as u128,
-            }
-        };
-
-        // Cap the difficulty target at `u64::MAX` if it has overflowed.
-        candidate_difficulty_target = core::cmp::min(candidate_difficulty_target, u64::MAX as u128);
-
-        // Cast the new difficulty target down from a u128 to a u64.
-        // Ensure that the leading 64 bits are zeros.
-        assert_eq!(candidate_difficulty_target.checked_shr(64), Some(0));
-        candidate_difficulty_target as u64
-    }
-}
 ```
 
 ## LedgerTree
@@ -352,72 +263,4 @@ The method that differs a bit is the `to_local_proof` one, which gets the corres
             commitment,
         )
     }
-```
-
-## Transactions
-
-This is yet again another wrapper of a Merkle Tree, but this time it is static, which means you can only build a Merkle Tree out of a list of `Transaction<N>` but you cannot add new Transactions into the tree.
-And you can use it to make proofs of inclusion of the transaction in the set.
-
-## BlockHeader
-```rust 
-pub struct BlockHeader<N: Network> {
-    /// The Merkle root representing the blocks in the ledger up to the previous block
-    previous_ledger_root: N::LedgerRoot,
-    /// The Merkle root representing the transactions in the block
-    transactions_root: N::TransactionsRoot,
-    /// The block header metadata
-    metadata: BlockHeaderMetadata,
-    /// Nonce for Proof of Succinct Work
-    nonce: N::PoSWNonce,
-    /// Proof of Succinct Work
-    proof: PoSWProof<N>,
-}
-```
-
-The `LedgerRoot`, `TransactionsRoot` , `PoSWNonce` and `PoSWProof` mean the same you're thinking about. And the `BlockHeaderMetadata` is defined as:
-
-```rust 
-pub struct BlockHeaderMetadata {
-    /// The height of this block - 4 bytes.
-    height: u32,
-    /// The block timestamp is a Unix epoch time (UTC) (according to the miner) - 8 bytes
-    timestamp: i64,
-    /// The difficulty target for this block - 8 bytes
-    difficulty_target: u64,
-    /// The cumulative weight up to this block (inclusive) - 16 bytes
-    cumulative_weight: u128,
-}
-```
-
-To be honest, the `BlockHeaderMetadata` is a glorified Dictionary/Map but it knows how to create the genesis block header and implements the `ToBytes` trait.
-
-Let's see the `BlockHeader` methods:
-
-- `pub fn from(N::LedgerRoot, N::TransactionsRoot, BlockHeaderMetadata, N::PoSWNonce, PoSWProof<N>) -> Result<Self, BlockError>` is a constructor, and it also verifies the block header is well formed.
-- `pub fn is_valid(&self) -> bool`. It makes some assertions:
-    - The previous ledger root cannot be the `Default::default` value.
-    - The transactions root cannot be the `Default::default` value. 
-    - The nonce cannot be the `Default::default` value. 
-    - Either the height is 0 and the block is the genesis block or the timestamp is greater than 0 and the PoSW proof is valid.
-
-This last item makes a call to `PoSW<N: Network>::verify_from_block_header(&self, &BlockHeader<N>) -> bool` which in turn calls the `verify` function in the same implementation using the header's difficulty target and proof, and the header root and nonce as inputs.
-
-`fn verify(&self, difficulty_target: u64, inputs: &[N::InnerScalarField], proof: &PoSWProof<N>) -> bool` runs a few checks (PoSW difficulty target must be met, the proof type should not be "not hiding")
-
-**question**: what is *not hiding*
-
-TODO: change
-```rust
-// Ensure the proof is valid under the deprecated PoSW parameters.
-if !proof.verify(&self.verifying_key, inputs) {
-    return false;
-}
-
-true
-```
-for
-```rust
-// Ensure the proof is valid under the deprecated PoSW parameters.
-proof.verify(&self.verifying_key, inputs)
 ```
