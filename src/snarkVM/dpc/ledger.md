@@ -1,6 +1,4 @@
-###### tags: `snarkVM_exploration`
-
-# dpc::Ledger
+# Ledger
 Reexports
 - blocks
 - ledger

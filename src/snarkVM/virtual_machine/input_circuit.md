@@ -6,7 +6,7 @@ An input circuit is a constraint synthesizer that can generate constraints with 
 
 This definition may be a lot to take in at first, so lets try explain a little bit the concepts within it. But its worth saying that I'll only explain the concepts that are relevant to snarkVM's implementation, I'll leave a link to the concepts that are independent from snarkVM's implementation.
 
-> Computations are expressed in terms of rank-1 constraint systems (R1CS) (more on R1CS [here](https://docs.circom.io/background/background/#rank-1-constraint-system)).
+> Computations are expressed in terms of rank-1 constraint systems [R1CS](https://docs.circom.io/background/background/#rank-1-constraint-system).
 
 ### Constraint Synthesizer
 
