@@ -1,6 +1,6 @@
-# aleo-documentation
+# Aleo Internals Book
 
-This is an mdbook about aleo's [snarkVM](https://github.com/AleoHQ/snarkVM/) and [snarkOS](https://github.com/AleoHQ/snarkOS/).
+This is an non official book about Aleo's [snarkVM](https://github.com/AleoHQ/snarkVM/) and [snarkOS](https://github.com/AleoHQ/snarkOS/).
 
 ## Requirements
 
