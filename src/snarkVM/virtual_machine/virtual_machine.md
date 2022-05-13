@@ -22,7 +22,7 @@ pub struct Request<N: Network> {
 ```
 
 A valid request means:
-- the amound of records it contains is less than a predefined constant (`N::NUM_INPUTS`),
+- the amount of records it contains is less than a predefined constant (`N::NUM_INPUTS`),
 - the number of ledger proofs is the same as the number of records,
 - all records have the same owner that same owner is the one who made the request,
 - the records contain a value that is at least the value of the fee,
@@ -33,7 +33,7 @@ A valid request means:
 - the record commitments are included in the ledger proof,
 - the signatures are valid.
 
-Once the request validity is asserted, the adecuate operation is computed, that can be a noop, coinbase, transfer or evaluate operation. The response is then built with the resulting operation.
+Once the request validity is asserted, the adequate operation is computed, that can be a noop, coinbase, transfer or evaluate operation. The response is then built with the resulting operation.
 
 <!-- TODO: Explain all operation enum -->
 
