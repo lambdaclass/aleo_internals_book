@@ -8,5 +8,5 @@
     - [virtual_machine](snarkVM/virtual_machine/introduction.md)
       - [execution](snarkVM/virtual_machine/execution.md)
       - [input_circuit](snarkVM/virtual_machine/input_circuit.md)
-      - [vritual_machine](snarkVM/virtual_machine/virtual_machine.md)
+      - [virtual_machine](snarkVM/virtual_machine/virtual_machine.md)
 - [snarkOS](./snarkOS/snarkOS.md)
