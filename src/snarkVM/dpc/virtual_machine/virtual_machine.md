@@ -35,7 +35,10 @@ A valid request means:
 
 Once the request validity is asserted, the adequate operation is computed, that can be a noop, coinbase, transfer or evaluate operation. The response is then built with the resulting operation.
 
-<!-- TODO: Explain all operation enum -->
+If the operation requested is noop, the response is built with the request.
+If the operation requested is coinbase, the given amount is generated to a recipient. The response is built with the request, the recipient and the amount.
+If the operation requested is transfer, the given amount is transferred from a caller to a recipient. It is ensured that the request caller matches the instruction caller, the starting balance of the caller is computed (the balance in the request minus the fee) and it is ensured that it is positive, the caller balance is computed (starting balance minus the amount) and it is ensure that it is positive. And the response is built with two outputs, one containing the caller and the caller balance, and another with the recipient and the amount.
+If the operation requested is evaluate, it returns a response based on the current state of the virtual machine. It is ensured that the request caller matches the instruction caller, the starting balance of the caller is computed (the balance in the request minus the fee) and it is ensured that it is positive, the caller balance is computed (starting balance minus the amount) and it is ensure that it is positive. An output containing the function inputs recipient, the function inputs amount, the function inputs record payload and the program id is added to the response builder but it is not built yet. There is a difference here with the transfer operation, and it is that if the caller balance is not zero the change is refund to the caller adding an output to the response builder containing the function inputs caller and the caller balance. After that, the custom events are added to the response builder. If the request is not public the response is finally built but in the case of a public request the operation is added to the response builder and then built.
 
 A response is structured like this:
 
