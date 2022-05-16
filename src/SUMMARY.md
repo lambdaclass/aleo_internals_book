@@ -11,6 +11,7 @@
             - [operation](snarkVM/dpc/virtual_machine/operation.md)
             - [function_inputs](snarkVM/dpc/virtual_machine/function_inputs.md)
             - [input_circuit](snarkVM/dpc/virtual_machine/input_circuit.md)
+            - [program_public_variables](snarkVM/dpc/virtual_machine/program_public_variables.md)
             - [program](snarkVM/dpc/virtual_machine/program.md)
             - [builder](snarkVM/dpc/virtual_machine/builder.md)
             - [virtual_machine](snarkVM/dpc/virtual_machine/virtual_machine.md)
