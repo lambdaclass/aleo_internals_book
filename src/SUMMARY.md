@@ -5,6 +5,8 @@
     - [dpc](./snarkVM/dpc/dpc.md)
         - [ledger](snarkVM/dpc/ledger.md)
         - [account](snarkVM/dpc/account.md)
+        - [transaction]
+            - [request](snarkVM/dpc/transaction/request.md)
         - [virtual_machine](snarkVM/dpc/virtual_machine/introduction.md)
             - [event](snarkVM/dpc/virtual_machine/event.md)
             - [execution](snarkVM/dpc/virtual_machine/execution.md)
