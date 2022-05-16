@@ -28,3 +28,21 @@ The functions that are implemented in the builder are:
 - `add_outputs`: Adds a list of outputs to the list of expected outputs.
 - `add_event`: Adds an event to the list of events if the number of events is less than `N::NUM_EVENTS`.
 - `build`: Finalizes the builder and returns a new instance of a `Response`.
+
+In the process of building a response, the following steps are performed:
+
+- It is ensured that there are no errors in the build process.
+- The request is fetched.
+- The events are fetched.
+- The state is constructed.
+- The inputs are constructed.
+- The output records are computed.
+- It is ensured that the input records have the correct program ID.
+- The commitments are computed.
+- The value balance is computed.
+- It is ensured that the value balance matches the fee from the request.
+- The transaction ID is computed.
+- The input value commitments are constructed.
+- The output value commitments are constructed
+- The final value balance commitment is constructed.
+- Finally, the response is constructed and returned.
