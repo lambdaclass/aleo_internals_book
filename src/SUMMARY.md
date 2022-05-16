@@ -6,6 +6,7 @@
         - [ledger](snarkVM/dpc/ledger.md)
         - [account](snarkVM/dpc/account.md)
         - [virtual_machine](snarkVM/dpc/virtual_machine/introduction.md)
+            - [event](snarkVM/dpc/virtual_machine/event.md)
             - [execution](snarkVM/dpc/virtual_machine/execution.md)
             - [operation](snarkVM/dpc/virtual_machine/operation.md)
             - [input_circuit](snarkVM/dpc/virtual_machine/input_circuit.md)
