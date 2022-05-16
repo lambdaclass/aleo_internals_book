@@ -7,6 +7,7 @@
         - [account](snarkVM/dpc/account.md)
         - [virtual_machine](snarkVM/dpc/virtual_machine/introduction.md)
             - [execution](snarkVM/dpc/virtual_machine/execution.md)
+            - [operation](snarkVM/dpc/virtual_machine/operation.md)
             - [input_circuit](snarkVM/dpc/virtual_machine/input_circuit.md)
             - [program](snarkVM/dpc/virtual_machine/program.md)
             - [builder](snarkVM/dpc/virtual_machine/builder.md)
