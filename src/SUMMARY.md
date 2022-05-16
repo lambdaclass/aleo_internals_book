@@ -9,6 +9,7 @@
             - [event](snarkVM/dpc/virtual_machine/event.md)
             - [execution](snarkVM/dpc/virtual_machine/execution.md)
             - [operation](snarkVM/dpc/virtual_machine/operation.md)
+            - [function_inputs](snarkVM/dpc/virtual_machine/function_inputs.md)
             - [input_circuit](snarkVM/dpc/virtual_machine/input_circuit.md)
             - [program](snarkVM/dpc/virtual_machine/program.md)
             - [builder](snarkVM/dpc/virtual_machine/builder.md)
