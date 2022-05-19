@@ -1,0 +1,1078 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Aleo Book</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="snarkVM/snarkVM.html"><strong aria-hidden="true">2.</strong> snarkVM</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="snarkVM/dpc/dpc.html"><strong aria-hidden="true">2.1.</strong> dpc</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="snarkVM/dpc/ledger.html"><strong aria-hidden="true">2.1.1.</strong> ledger</a></li><li class="chapter-item expanded "><a href="snarkVM/dpc/account.html"><strong aria-hidden="true">2.1.2.</strong> account</a></li></ol></li><li class="chapter-item expanded "><a href="snarkVM/virtual_machine/introduction.html"><strong aria-hidden="true">2.2.</strong> virtual_machine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="snarkVM/virtual_machine/execution.html"><strong aria-hidden="true">2.2.1.</strong> execution</a></li><li class="chapter-item expanded "><a href="snarkVM/virtual_machine/input_circuit.html"><strong aria-hidden="true">2.2.2.</strong> input_circuit</a></li><li class="chapter-item expanded "><a href="snarkVM/virtual_machine/virtual_machine.html"><strong aria-hidden="true">2.2.3.</strong> vritual_machine</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="snarkOS/snarkOS.html"><strong aria-hidden="true">3.</strong> snarkOS</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Aleo Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="snarkvm"><a class="header" href="#snarkvm">snarkVM</a></h1>
+<pre><code class="language-mermaid">flowchart LR 
+
+style A fill:#f9a,stroke:#333,stroke-width:4px
+style B fill:#f9a,stroke:#333,stroke-width:4px
+style C fill:#f9a,stroke:#333,stroke-width:4px
+style C1 fill:#f9f,stroke:#333,stroke-width:4px
+style C2 fill:#f9f,stroke:#333,stroke-width:4px
+style C3 fill:#f9f,stroke:#333,stroke-width:4px
+style D fill:#f9a,stroke:#333,stroke-width:4px
+style D1 fill:#f9f,stroke:#333,stroke-width:4px
+style D2 fill:#f9f,stroke:#333,stroke-width:4px
+style E fill:#f9a,stroke:#333,stroke-width:4px
+style E1 fill:#f9f,stroke:#333,stroke-width:4px
+style E2 fill:#f9f,stroke:#333,stroke-width:4px
+style E3 fill:#f9f,stroke:#333,stroke-width:4px
+style E4 fill:#f9a,stroke:#333,stroke-width:4px
+style F fill:#f9a,stroke:#333,stroke-width:4px
+style F1 fill:#f9f,stroke:#333,stroke-width:4px
+style F2 fill:#f9f,stroke:#333,stroke-width:4px
+style G fill:#f9a,stroke:#333,stroke-width:4px
+style G1 fill:#f9f,stroke:#333,stroke-width:4px
+style G2 fill:#f9f,stroke:#333,stroke-width:4px
+style H fill:#f9a,stroke:#333,stroke-width:4px
+style H1 fill:#f9f,stroke:#333,stroke-width:4px
+style H2 fill:#f9f,stroke:#333,stroke-width:4px
+style H3 fill:#f9f,stroke:#333,stroke-width:4px
+style I fill:#f9a,stroke:#333,stroke-width:4px
+style I1 fill:#f9f,stroke:#333,stroke-width:4px
+style I2 fill:#f9f,stroke:#333,stroke-width:4px
+style J fill:#f9a,stroke:#333,stroke-width:4px
+style J2 fill:#f9f,stroke:#333,stroke-width:4px
+
+
+A[snarkvm] --&gt; B(cli)
+A[snarkvm] --&gt; C(algorithms)
+
+C[algorithm] --&gt; C1(errors)
+C[algorithm] --&gt; C2(traits)
+C[algorithm] --&gt; C3(prelude)
+
+A[snarkvm] --&gt; D(curves)
+
+D[curves] --&gt; D1(errors)
+D[curves] --&gt; D2(traits)
+
+A[snarkvm] --&gt; E(dpc)
+
+E[dpc] --&gt; E1(errors)
+E[dpc] --&gt; E2(traits)
+E[dpc] --&gt; E3(prelude)
+E[dpc] --&gt; E4(ledger)
+
+A[snarkvm] --&gt; F(fields)
+
+F[fields] --&gt; F1(errors)
+F[fields] --&gt; F2(traits)
+
+A[snarkvm] --&gt; G(gadgets)
+
+G[gadgets] --&gt; G1(errors)
+G[gadgets] --&gt; G2(traits)
+
+A[snarkvm] --&gt; H(parameters)
+
+H[parameters] --&gt; H1(errors)
+H[parameters] --&gt; H2(traits)
+H[parameters] --&gt; H3(prelude)
+
+A[snarkvm] --&gt; I(r1cs)
+I[r1cs] --&gt; I1(errors)
+I[r1cs] --&gt; I2(prelude)
+
+A[snarkvm] --&gt; J(utilities)
+J[utilities] --&gt; J2(prelude)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="snarkvm-dpc"><a class="header" href="#snarkvm-dpc">snarkVM dpc</a></h1>
+<p>The dpc crate contains all the logic related to the virtual machine.</p>
+<div style="break-before: page; page-break-before: always;"></div><h6 id="tags-snarkvm_exploration"><a class="header" href="#tags-snarkvm_exploration">tags: <code>snarkVM_exploration</code></a></h6>
+<h1 id="dpcledger"><a class="header" href="#dpcledger">dpc::Ledger</a></h1>
+<p>Reexports</p>
+<ul>
+<li>blocks</li>
+<li>ledger</li>
+<li>ledger_proof</li>
+<li>ledger_tree</li>
+<li>local_proof</li>
+<li>memory_pool</li>
+<li>record_proof</li>
+<li>transitions</li>
+</ul>
+<h2 id="ledger"><a class="header" href="#ledger">ledger</a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Ledger&lt;N: Network&gt; {
+    /// The canonical chain of blocks.
+    canon_blocks: Blocks&lt;N&gt;,
+    /// The set of unknown orphan blocks.
+    orphan_blocks: HashMap&lt;u32, Block&lt;N&gt;&gt;,
+    /// The pool of unconfirmed transactions.
+    memory_pool: MemoryPool&lt;N&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The <code>Ledger</code> keeps track of the canonical chain (current chain), the orphan blocks (yet to be confirmed) and the unconfirmed transactions.</p>
+<p>After a few getters we then get to the interesting stuff, which is actually altering state. <code>add_next_block</code>, <code>to_ledger_proof</code> and <code>to_ledger_tree</code> immediately call the respective method of canon_blocks, so we'll handle that later when we talk about <code>Blocks</code>. </p>
+<p><code>add_orphan_block</code> is pretty straightforward, it suffices to know that it checks that the block is in fact orphan (not present in the canonical chain).
+<strong>question</strong>: documentation says <code>/// Adds the given orphan block, if it is well-formed and does not already exist.</code> but it never validates the well-formedness of the block, is that missing or are <code>Block&lt;N&gt;</code> validated before constructing?</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Adds the given unconfirmed transaction to the memory pool.
+pub fn add_unconfirmed_transaction(&amp;mut self, transaction: &amp;Transaction&lt;N&gt;) -&gt; Result&lt;()&gt; {
+    ensure!(
+        self.canon_blocks.contains_ledger_root(&amp;transaction.ledger_root()), 
+        &quot;Transaction references a non-existent ledger root&quot;
+    );
+
+    // Ensure the transaction does not contain serial numbers already in the canon chain.
+    for serial_number in transaction.serial_numbers() {
+        ensure!(
+            !self.canon_blocks.contains_serial_number(serial_number), 
+            &quot;Transaction contains a serial number already in existence&quot;
+        );
+    }
+
+    // Ensure the transaction does not contain commitments already in the canon chain.
+    for commitment in transaction.commitments() {
+        ensure!(
+            !self.canon_blocks.contains_commitment(commitment), 
+            &quot;Transaction contains a commitment already in existence&quot;
+        );
+    }
+    // Attempt to add the transaction into the memory pool.
+    self.memory_pool.add_transaction(transaction)?;
+
+    Ok(())
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>A transaction needs to reference the canonical chain's root, and all of its serial numbers and it's commitment need to be unused in the canonical chain to be included in the transaction memory pool.</p>
+<p>The juciest function is <code>mine_next_block</code> which performs the following steps:</p>
+<ul>
+<li>Ensure that the new timestamp is ahead of the previous timestamp (it's more of a fix it if it is not ahead, it won't throw an error if it is behind).</li>
+<li>Compute the block difficulty (currently uses the height as well as some of the genesis_block parameters)</li>
+<li>Compute the cumulative weight $\sum_{b \in \text{canonical_chain}} u64_{\text{max}} / \text{difficulty}_b$ including the candidate block.</li>
+<li>Construct the new block transactions. Build coinbase and block transactions containing the coinbase and the mempool transactions (there's a <code>VirtualMaching::execute</code> call behind the scenes)</li>
+<li>Construct the block template.</li>
+<li>Mine the next block.</li>
+<li>Attempt to add the block to the canon chain.</li>
+<li>On <strong>success</strong>, clear the memory pool of its transactions.</li>
+</ul>
+<h2 id="blocks"><a class="header" href="#blocks">Blocks</a></h2>
+<p>The Blocks struct represents a chain of blocks and is used in the ledger to store the canonical chain of blocks</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Blocks&lt;N: Network&gt; {
+    /// The current block height.
+    current_height: u32,
+    /// The current block hash.
+    current_hash: N::BlockHash,
+    /// The current ledger tree.
+    ledger_tree: LedgerTree&lt;N&gt;,
+    /// The chain of previous block hashes.
+    previous_hashes: HashMap&lt;u32, N::BlockHash&gt;,
+    /// The chain of block headers.
+    headers: HashMap&lt;u32, BlockHeader&lt;N&gt;&gt;,
+    /// The chain of block transactions.
+    transactions: HashMap&lt;u32, Transactions&lt;N&gt;&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Most functions in <code>blocks.rs</code> are getters/setters that delegate the responsibility to either the <code>ledger_tree</code>, <code>previous_hashes</code>, <code>headers</code>, or <code>transactions</code>.</p>
+<p>One of the 'heavy' functions is <code>add_next</code>, which adds a block as the latest in the canonical chain and is used by the <code>Ledger</code>. 
+It runs some verifications by ensuring:</p>
+<ul>
+<li>The given block is valid</li>
+<li>The given block has the correct block height</li>
+<li>The given block height does not already exist in the ledger</li>
+<li>The given block has the appropiate previous block hash</li>
+<li>The given block hash does not already exist in the ledger</li>
+<li>The next block timestamp is within the declared time limit</li>
+<li>The given block timestamp is after the current timestamp</li>
+<li>The given block difficulty target is correct</li>
+<li>The expected cumulative weight is computed correctly</li>
+<li>The given cumulative weight is correct.</li>
+<li>Each transaction in the block does not already exist in the ledger</li>
+<li>Each transaction's ledger root is the same as the ledger's</li>
+<li>Each serial number does not exist in the ledger</li>
+<li>Each commitment does not exist in the ledger</li>
+</ul>
+<p>And after that it attempts to add the block in each structure.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Add the block to the ledger. This code section executes atomically.
+{
+    let mut blocks = self.clone();
+
+    blocks.current_height = height;
+    blocks.current_hash = block_hash;
+    blocks.ledger_tree.add(&amp;block.hash())?;
+    blocks.previous_hashes.insert(height, block.previous_block_hash());
+    blocks.headers.insert(height, block.header().clone());
+    blocks.transactions.insert(height, block.transactions().clone());
+
+    *self = blocks;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><strong>question</strong>: why does this execute atomically? Did they actually meant that since the self is cloned you don't have race conditions? because the block does not execute atomically. 
+Is it possible to add two different blocks with the same height twice? -&gt; No, since each <code>add_next</code> call overwrites the whole structure</p>
+<p>The next function to take a look at is the to_ledger_proof. This does a bunch of things but succintly, it computes a few other proofs:</p>
+<pre><code class="language-mermaid">flowchart LR
+
+a[LedgerProof] --&gt; b[LedgerRootInclusionProof]
+a[LedgerProof] --&gt; c[RecordProof]
+
+c[RecordProof] --&gt; d[BlockHeaderInclusionProof]
+c[RecordProof] --&gt; e[TransactionsInclusionProof]
+c[RecordProof] --&gt; f[LocalInclusionProof]
+
+d[BlockHeaderInclusionProof] --&gt; g[BlockHeader::to_header_inclusion_proof]
+e[TransactionsInclusionProof] --&gt; h[Transactions::to_transactions_inclusion_proof]
+f[LocalInclusionProof] --&gt; i[Transitions::to_local_proof]
+b[LedgerRootInclusionProof] --&gt; j[LedgerTree::to_ledger_inclusion_proof]
+
+i[Transitions::to_local_proof] --&gt; k[Transition::to_transition_inclusion_proof]
+i[Transitions::to_local_proof] --&gt; l[Transitions::to_transition_inclusion_proof]
+
+</code></pre>
+<p>The last function is <code>assert_retarget</code>, which is used to compute the difficulty of the next block to be mined, and is based on the difficulty retarget algorithm from the <a href="https://www.reference.cash/protocol/forks/2020-11-15-asert">zcash protocol</a>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>///     T_{i+1} = T_anchor * 2^((S - B * N) / tau).
+///     T_anchor = Anchor target of a specific block height
+///     B = Expected time per block.
+///     S = Time elapsed since the anchor.
+///     N = Number of blocks since the anchor.
+///     tau = The half life of the algorithm. For every `tau` seconds ahead of
+///           schedule a block’s timestamp becomes, the difficulty doubles.
+/// To avoid use of floating points, we use fixed-point arithmetic.
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="ledgertree"><a class="header" href="#ledgertree">LedgerTree</a></h2>
+<p>The ledger tree is a merkle tree</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LedgerTree&lt;N: Network&gt; {
+    #[derivative(Debug = &quot;ignore&quot;)]
+    tree: Arc&lt;MerkleTree&lt;N::LedgerRootParameters&gt;&gt;,
+    block_hashes: HashMap&lt;N::BlockHash, u32&gt;,
+    current_index: u32,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The <code>tree</code> is the actual Merkle Tree, but the <code>block_hashes</code> are used to keep track of the blocks in the tree (lookup is faster) and to map the block hash to its respective height in the tree. The <code>current index keeps track of the index of the last added block in the tree</code></p>
+<p>There are two methods for adding blocks, <code>add</code> and <code>add_all</code>. Those are pretty much well documented. One thing i noticed is this piece:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span> self.tree = match self.current_index {
+        0 =&gt; Arc::new(MerkleTree::&lt;N::LedgerRootParameters&gt;::new::&lt;N::BlockHash&gt;(
+            Arc::new(N::ledger_root_parameters().clone()),
+            block_hashes,
+        )?),
+        _ =&gt; Arc::new(self.tree.rebuild(self.current_index as usize, block_hashes)?),
+};
+<span class="boring">}
+</span></code></pre></pre>
+<p><strong>question</strong>: why would you handle things differently?</p>
+<p><strong>question2</strong>: why do we do this twice?</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>ensure!(
+        (self.current_index as usize).saturating_add(num_block_hashes) &lt;= u32::MAX as usize, 
+        &quot;The ledger tree will reach its maximum size.&quot;
+    );
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>self.current_index = self
+        .current_index
+        .checked_add(num_block_hashes as u32)
+        .ok_or_else(|| anyhow!(&quot;The index exceeds the maximum number of allowed block hashes.&quot;))?;
+    let end_index = self.current_index.checked_sub(1).ok_or_else(|| anyhow!(&quot;Integer underflow.&quot;))?;
+<span class="boring">}
+</span></code></pre></pre>
+<p>The rest of the methods are getters and setters, the <code>MerkleTree</code> takes care of the inclusion proof:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Returns the Merkle path for a given block hash.
+fn to_ledger_inclusion_proof(&amp;self, block_hash: &amp;N::BlockHash) -&gt; Result&lt;MerklePath&lt;N::LedgerRootParameters&gt;&gt; {
+    match self.get_block_hash_index(block_hash) {
+        Some(index) =&gt; Ok(self.tree.generate_proof(*index as usize, block_hash)?),
+        _ =&gt; Err(MerkleError::MissingLeaf(format!(&quot;{}&quot;, block_hash)).into()),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="transitions"><a class="header" href="#transitions">Transitions</a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub(crate) struct Transitions&lt;N: Network&gt; {
+    #[derivative(Debug = &quot;ignore&quot;)]
+    tree: Arc&lt;MerkleTree&lt;N::TransactionIDParameters&gt;&gt;,
+    transitions: HashMap&lt;N::TransitionID, (u8, Transition&lt;N&gt;)&gt;,
+    current_index: u8,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>As the LedgerTree, this is also a wrapper of a Merkle Tree used for storing a set of Transitions.</p>
+<p>IN FACT, <strong>question</strong>: Is this abstractable?</p>
+<p>The method that differs a bit is the <code>to_local_proof</code> one, which gets the corresponding transition for the commitment, and makes an inclusion proof of the commitment in the transition and the transition in the transition tree.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span> /// Returns the local proof for a given commitment.
+    pub(crate) fn to_local_proof(&amp;self, commitment: N::Commitment) -&gt; Result&lt;LocalProof&lt;N&gt;&gt; {
+        let (_, (_, transition)) = match self
+            .transitions
+            .iter()
+            .filter(|(_, (_, transition))| transition.contains_commitment(&amp;commitment))
+            .last()
+        {
+            Some(tuple) =&gt; tuple,
+            None =&gt; return Err(MerkleError::MissingLeaf(format!(&quot;{}&quot;, commitment)).into()),
+        };
+
+        let transition_id = transition.transition_id();
+        let transition_inclusion_proof = transition.to_transition_inclusion_proof(commitment)?;
+        let transaction_id = self.root();
+        let transaction_inclusion_proof = self.to_transition_path(transition_id)?;
+
+        LocalProof::new(
+            transaction_id,
+            transaction_inclusion_proof,
+            transition_id,
+            transition_inclusion_proof,
+            commitment,
+        )
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="account"><a class="header" href="#account">Account</a></h1>
+<h2 id="inside-account"><a class="header" href="#inside-account">Inside Account</a></h2>
+<ul>
+<li>account_format</li>
+<li>account</li>
+<li>address</li>
+<li>compute_key</li>
+<li>private_key</li>
+<li>view_key</li>
+</ul>
+<h2 id="account-1"><a class="header" href="#account-1">Account</a></h2>
+<p>The account is an struct containing the following fields</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Account&lt;N: Network&gt; {
+    private_key: PrivateKey&lt;N&gt;,
+    view_key: ViewKey&lt;N&gt;,
+    address: Address&lt;N&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This can be created with the <code>new</code> function that receives an rng (random number generator) and create a new account from a new <code>PrivateKey</code>.</p>
+<p>It has some getters for every field of the account struct <code>private_key</code>,<code>view_key</code> and <code>address</code>. The first ones returns a reference and the address one returns an owned address.</p>
+<p>The account implements the <code>From</code> trait too, that receives an already created <code>PrivateKey</code> to create an account. This would create the address and view key from that private key and then return a new account with that data.</p>
+<p>In the end there are <code>Debug</code> and <code>Display</code> implementations for the account, with the following format 
+<code>Account {{private_key: &quot;&quot;, view_key: &quot;&quot;, address: &quot;&quot;}}</code></p>
+<h2 id="address"><a class="header" href="#address">Address</a></h2>
+<p>This is a struct representing the address for an account containing the corresponding key.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Address&lt;N: Network&gt;(&lt;N::AccountEncryptionScheme as EncryptionScheme&gt;::PublicKey);
+<span class="boring">}
+</span></code></pre></pre>
+<p>It has different ways to create an address. From a private key, from a compute key and from a view key.
+The functions <code>from_private_key</code>, <code>from_compute_key</code> and <code>from_view_key</code>. It also has implementations for <code>From</code> trait with all the different keys.</p>
+<p><strong>question:</strong> Is this really necessary? we can keep the functions or the from trait.</p>
+<p>The implementation of the one that receives the private key just transform that key to a compute key and then generates the encryption key that the address will use.
+Otherwise the one that receives the view key generates a public key with that view key and use that as the address that the addres will use.</p>
+<p>It has a <code>verify_signature</code> function that verifies a signature on a message signed by the account key. This function returns true or false depending if the signature have signed a given message or false if not. This function has two parameters: </p>
+<ul>
+<li>the first one is the message: an array of bools representing the sequence of bits of the message that was signed.</li>
+<li>The other it's the signature that we want to verify.
+This function calls a verify function defined in signature module that looks like this:</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>///
+    /// Verifies (c == c') &amp;&amp; (public_key == G^sk_sig G^r_sig G^sk_prf) where:
+    ///     c' := Hash(G^sk_sig G^r_sig G^sk_prf, G^s G^sk_sig^c, message)
+    ///
+    fn verify(&amp;self, public_key: &amp;Self::PublicKey, message: &amp;[bool], signature: &amp;Self::Signature) -&gt; Result&lt;bool&gt; {
+        // Extract the signature contents.
+        let AleoSignature { prover_response, verifier_challenge, root_public_key, root_randomizer } = signature;
+
+        // Recover G^sk_sig.
+        let g_sk_sig = Self::recover_from_x_coordinate(root_public_key)?;
+
+        // Compute G^sk_sig^c.
+        let g_sk_sig_c = self.scalar_multiply(g_sk_sig, verifier_challenge);
+
+        // Compute G^r := G^s G^sk_sig^c.
+        let g_r = (self.g_scalar_multiply(prover_response) + g_sk_sig_c).to_affine();
+
+        // Compute the candidate verifier challenge.
+        let candidate_verifier_challenge = {
+            // Construct the hash input (G^sk_sig G^r_sig G^sk_prf, G^r, message).
+            let mut preimage = vec![];
+            preimage.extend_from_slice(&amp;public_key.to_x_coordinate().to_field_elements()?);
+            preimage.extend_from_slice(&amp;g_r.to_x_coordinate().to_field_elements()?);
+            preimage.push(TE::BaseField::from(message.len() as u128));
+            preimage.extend_from_slice(&amp;message.to_field_elements()?);
+
+            // Hash to derive the verifier challenge.
+            self.hash_to_scalar_field(&amp;preimage)
+        };
+
+        // Recover G^r_sig.
+        let g_r_sig = Self::recover_from_x_coordinate(root_randomizer)?;
+
+        // Compute the candidate public key as (G^sk_sig G^r_sig G^sk_prf).
+        let candidate_public_key = {
+            // Compute sk_prf := RO(G^sk_sig || G^r_sig).
+            let sk_prf = self.hash_to_scalar_field(&amp;[g_sk_sig.to_x_coordinate(), g_r_sig.to_x_coordinate()]);
+
+            // Compute G^sk_prf.
+            let g_sk_prf = self.g_scalar_multiply(&amp;sk_prf);
+
+            // Compute G^sk_sig G^r_sig G^sk_prf.
+            g_sk_sig.to_projective() + g_sk_prf + g_r_sig.to_projective()
+        };
+
+        Ok(*verifier_challenge == candidate_verifier_challenge &amp;&amp; *public_key == candidate_public_key)
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="virtual_machine"><a class="header" href="#virtual_machine">virtual_machine</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="execution"><a class="header" href="#execution">Execution</a></h1>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Execution&lt;N: Network&gt; {
+    pub program_execution: Option&lt;ProgramExecution&lt;N&gt;&gt;,
+    pub input_proofs: Vec&lt;N::InputProof&gt;,
+    pub output_proofs: Vec&lt;N::OutputProof&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>It is created from a <code>ProgramExecution</code>, a vector of <code>InputProof</code> and a vector of <code>OutputProof</code>.</p>
+<p>This structure only has two functions implemented. The one that creates it (<code>from</code>) and <code>verify</code>.</p>
+<p>Basically what <code>Execution</code> does is verify the zero knowledge proofs attesting to the validity of a <code>Transition</code>.</p>
+<p>The verification process is carried out as follows:</p>
+<ul>
+<li>Ensure that every input proof is valid for the given public variables with a given input verifying key.</li>
+<li>Ensure that every output proof is valid for the given public variables with a given output verifying key.</li>
+<li>Ensure that the program execution proof is valid.</li>
+</ul>
+<p>This <code>verify</code> function is called by <code>Transition::verify</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="input-circuit"><a class="header" href="#input-circuit">Input Circuit</a></h1>
+<h2 id="what-is-an-input-circuit"><a class="header" href="#what-is-an-input-circuit">What is an input circuit?</a></h2>
+<p>An input circuit is a constraint synthesizer that can generate constraints with public and private variables for a given constraint system.</p>
+<p>This definition may be a lot to take in at first, so lets try explain a little bit the concepts within it. But its worth saying that I'll only explain the concepts that are relevant to snarkVM's implementation, I'll leave a link to the concepts that are independent from snarkVM's implementation.</p>
+<blockquote>
+<p>Computations are expressed in terms of rank-1 constraint systems <a href="https://docs.circom.io/background/background/#rank-1-constraint-system">R1CS</a>.</p>
+</blockquote>
+<h3 id="constraint-synthesizer"><a class="header" href="#constraint-synthesizer">Constraint Synthesizer</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Computations are expressed in terms of rank-1 constraint systems (R1CS).
+/// The `generate_constraints` method is called to generate constraints for
+/// both CRS generation and for proving.
+pub trait ConstraintSynthesizer&lt;F: Field&gt; {
+    /// Drives generation of new constraints inside `CS`.
+    fn generate_constraints&lt;CS: ConstraintSystem&lt;F&gt;&gt;(&amp;self, cs: &amp;mut CS) -&gt; Result&lt;(), SynthesisError&gt;;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>A Constraint Synthesizer drives the generation of new constraints inside a Constraint System.</p>
+<h3 id="constraint-system"><a class="header" href="#constraint-system">Constraint System</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Represents a constraint system which can have new variables
+/// allocated and constrains between them formed.
+pub trait ConstraintSystem&lt;F: Field&gt;: Sized {
+    /// Represents the type of the &quot;root&quot; of this constraint system
+    /// so that nested namespaces can minimize indirection.
+    type Root: ConstraintSystem&lt;F&gt;;
+
+    /// Return the &quot;one&quot; input variable
+    fn one() -&gt; Variable {
+        Variable::new_unchecked(Index::Public(0))
+    }
+
+    /// Allocate a private variable in the constraint system. The provided
+    /// function is used to determine the assignment of the variable. The
+    /// given `annotation` function is invoked in testing contexts in order
+    /// to derive a unique name for this variable in the current namespace.
+    fn alloc&lt;FN, A, AR&gt;(&amp;mut self, annotation: A, f: FN) -&gt; Result&lt;Variable, SynthesisError&gt;
+    where
+        FN: FnOnce() -&gt; Result&lt;F, SynthesisError&gt;,
+        A: FnOnce() -&gt; AR,
+        AR: AsRef&lt;str&gt;;
+
+    /// Allocate a public variable in the constraint system. The provided
+    /// function is used to determine the assignment of the variable.
+    fn alloc_input&lt;FN, A, AR&gt;(&amp;mut self, annotation: A, f: FN) -&gt; Result&lt;Variable, SynthesisError&gt;
+    where
+        FN: FnOnce() -&gt; Result&lt;F, SynthesisError&gt;,
+        A: FnOnce() -&gt; AR,
+        AR: AsRef&lt;str&gt;;
+
+    /// Enforce that `A` * `B` = `C`. The `annotation` function is invoked in
+    /// testing contexts in order to derive a unique name for the constraint
+    /// in the current namespace.
+    fn enforce&lt;A, AR, LA, LB, LC&gt;(&amp;mut self, annotation: A, a: LA, b: LB, c: LC)
+    where
+        A: FnOnce() -&gt; AR,
+        AR: AsRef&lt;str&gt;,
+        LA: FnOnce(LinearCombination&lt;F&gt;) -&gt; LinearCombination&lt;F&gt;,
+        LB: FnOnce(LinearCombination&lt;F&gt;) -&gt; LinearCombination&lt;F&gt;,
+        LC: FnOnce(LinearCombination&lt;F&gt;) -&gt; LinearCombination&lt;F&gt;;
+
+    /// Create a new (sub)namespace and enter into it. Not intended
+    /// for downstream use; use `namespace` instead.
+    fn push_namespace&lt;NR, N&gt;(&amp;mut self, name_fn: N)
+    where
+        NR: AsRef&lt;str&gt;,
+        N: FnOnce() -&gt; NR;
+
+    /// Exit out of the existing namespace. Not intended for
+    /// downstream use; use `namespace` instead.
+    fn pop_namespace(&amp;mut self);
+
+    /// Gets the &quot;root&quot; constraint system, bypassing the namespacing.
+    /// Not intended for downstream use; use `namespace` instead.
+    fn get_root(&amp;mut self) -&gt; &amp;mut Self::Root;
+
+    /// Begin a namespace for this constraint system.
+    fn ns&lt;NR, N&gt;(&amp;mut self, name_fn: N) -&gt; Namespace&lt;'_, F, Self::Root&gt;
+    where
+        NR: AsRef&lt;str&gt;,
+        N: FnOnce() -&gt; NR,
+    {
+        self.get_root().push_namespace(name_fn);
+
+        Namespace(self.get_root(), PhantomData)
+    }
+
+    /// Output the number of constraints in the system.
+    fn num_constraints(&amp;self) -&gt; usize;
+
+    /// Output the number of public input variables to the system.
+    fn num_public_variables(&amp;self) -&gt; usize;
+
+    /// Output the number of private input variables to the system.
+    fn num_private_variables(&amp;self) -&gt; usize;
+
+    /// Output whether the constraint system is in the setup mode.
+    fn is_in_setup_mode(&amp;self) -&gt; bool;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>A constraint system can have new variables (signals) allocated and constrains that are formed between them. 
+Structs that implement the <code>ConstraintSystem</code> trait can:</p>
+<ul>
+<li>Allocate private and public variables.</li>
+<li>Enforce that  A * B = C, being A, B and C linear combinations with coefficients in a given field.</li>
+<li>Enter into new (sub)namespaces and exit from them.</li>
+<li>Begin a namespace for its system.</li>
+</ul>
+<h2 id="namespace"><a class="header" href="#namespace">Namespace</a></h2>
+<p>Namespaces are a kind of constraint system which borrows a constraint system (pushing a namespace context) and, when dropped, pops out  the namespace context. 
+Namespaces can never be a root constraint system.</p>
+<p>The structure an input circuit is the following:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InputCircuit&lt;N: Network&gt; {
+    public: InputPublicVariables&lt;N&gt;,
+    private: InputPrivateVariables&lt;N&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="input-public-variable"><a class="header" href="#input-public-variable">Input Public Variable</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InputPublicVariables&lt;N: Network&gt; {
+    /// The serial number of the input record.
+    serial_number: N::SerialNumber,
+    /// The commitments on the input record value.
+    input_value_commitment: N::ValueCommitment,
+    ledger_root: N::LedgerRoot,
+    local_transitions_root: N::TransactionID,
+    // These are required in natively verifying an inner circuit proof.
+    // However for verification in the outer circuit, these must be provided as witness.
+    /// Program ID
+    pub(super) program_id: Option&lt;N::ProgramID&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Input public variables are structs that contain the <em>serial number</em> of an input record, the <em>input value commitment</em> that is the value of the commitments on the input record value, the <em>ledger root</em>, the <em>local transactions root</em> of type <code>N::TransactionID</code> and a <em>program id</em> of type <code>N::ProgramID</code>. The last are required in natively verifying an input circuit proof. However for verification in the outer circuit, these might be provided as witness.
+They can be created blank with default values using <code>InputVariables::blank</code> or with specific values using <code>InputVariables::new</code> passing the pertinent arguments for its building.
+The can be turned into field elements, this is a vector of <code>InnerScalarField</code>s.</p>
+<h3 id="input-private-variable"><a class="header" href="#input-private-variable">Input Private Variable</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InputPrivateVariables&lt;N: Network&gt; {
+    // Inputs.
+    pub(super) input_record: Record&lt;N&gt;,
+    pub(super) ledger_proof: LedgerProof&lt;N&gt;,
+    pub(super) signature: N::AccountSignature,
+
+    pub(super) input_value_commitment_randomness: N::ProgramScalarField,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Input private variables are structs that contain an <em>input record</em>, a <em>ledger proof</em>, a <em>signature</em> and an <em>input value commitment randomness</em>, that is a <code>ProgramScalarField</code> (an alias for <code>PrimeField</code> trait).
+Like public variables the can be blank or not.</p>
+<p>Well, now we have a better context. We know what it means to be an input circuit, what it does, who interact, and where it works. But, how does it generate a constraint?</p>
+<h3 id="constraints-generation"><a class="header" href="#constraints-generation">Constraints Generation</a></h3>
+<p>To generate constraints means:</p>
+<ol>
+<li>Declare this variables as namespaces and field elements.</li>
+<li>Check that the record is well-formed.</li>
+<li>Check that the serial number is derived correctly.</li>
+<li>Check that the commitment appears on the ledger or prior transition (i.e. the membership witness is valid with respect to the ledger root). </li>
+<li>Check that the input value commitment is derived correctly.</li>
+<li>Check that the signature is valid.</li>
+</ol>
+<p>For a more in-deph understanding of the constraints generation, this is the complete workflow:</p>
+<h4 id="declare-this-variables-as-namespaces-and-field-elements"><a class="header" href="#declare-this-variables-as-namespaces-and-field-elements">Declare this variables as namespaces and field elements</a></h4>
+<ul>
+<li>Declare a ledger root.</li>
+<li>Declare the local transitions root.</li>
+<li>Declare the program ID.</li>
+<li>Declare the transition signature.</li>
+<li>Declare parameters.
+<ul>
+<li>Declare the account encryption parameters.</li>
+<li>Declare the account signature parameters.</li>
+<li>Declare the record commitment parameters.</li>
+<li>Declare the record value commitment parameters.</li>
+<li>Declare the transition ID CRH parameters.</li>
+<li>Declare the transaction CRH parameters.</li>
+<li>Declare the transactions root CRH parameters.</li>
+<li>Declare the block header root CRH parameters.</li>
+<li>Declare the block hash CRH parameters.</li>
+<li>Declare the ledger root CRH parameters.</li>
+</ul>
+</li>
+<li>Declare record contents.
+<em>There is no need to check that commitments, keys and hashes are in prime order subgroup because the commitment and CRH parameters are trusted, and so when we recompute these, the newly computed values will always be in correct subgroup. If the input cm, pk, or hash is incorrect, then it will not match the computed equivalent.</em>
+<ul>
+<li>Declare the given owner.</li>
+<li>Declare the given is dummy.</li>
+<li>Declare the given values in bytes.</li>
+<li>Declare the given payload (empty if the record does not have one).</li>
+<li>Declare the given program id (empty program id if the record does not have one).</li>
+<li>Declare the given randomizer.</li>
+<li>Declare the given record view key.</li>
+</ul>
+</li>
+</ul>
+<h4 id="check-that-the-record-is-well-formed"><a class="header" href="#check-that-the-record-is-well-formed">Check that the record is well-formed.</a></h4>
+<ul>
+<li>Convert the owner, dummy flag, value, payload, program ID, and randomizer into bits.
+<ul>
+<li>Convert given is dummy to bytes.</li>
+<li>Convert given value to field elements.</li>
+<li>Convert given payload to field elements.</li>
+<li>Convert given program ID to field elements.</li>
+<li>Perform noop safety checks.
+<ul>
+<li>If the input record is empty, enforce it has a value of 0.</li>
+<li>If the input record is empty, enforce it has an empty payload.</li>
+<li>If the input record is empty, enforce it has an empty program ID.</li>
+<li>Ensure the program ID matches the declared program ID.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Compute the record commitment and check that it matches the declared commitment.
+<ul>
+<li>Declare given owner gadget.</li>
+<li>Encode input value (given value in bytes).</li>
+<li>Encode input payload (given payload).</li>
+<li>Produce a ciphertext Check encryption from symmetric key: a ciphertext is produced out of the given record viewkey and the plaintext (the plaintext includes the encoded given value and the encoded given payload).</li>
+<li>Produce the record view key commitment with the given record view key.</li>
+<li>Construct a commitment input with the given randomizer, the record view key commitment, the ciphertext, the given program id and the given is dummy flag (all as bytes).</li>
+<li>Build the candidate commitment with the record commitment parameters and the commitment input.</li>
+</ul>
+</li>
+</ul>
+<h4 id="check-that-the-serial-number-is-derived-correctly"><a class="header" href="#check-that-the-serial-number-is-derived-correctly">Check that the serial number is derived correctly.</a></h4>
+<ul>
+<li>Compute a candidate serial number out of the computed key for a signature and the commitment. </li>
+<li>Declare given serial number with the public variable's serial number.</li>
+<li>Check that the candidate serial number is equal to the given serial number.</li>
+</ul>
+<h4 id="check-that-the-commitment-appears-on-the-ledger-or-prior-transition-ie-the-membership-witness-is-valid-with-respect-to-the-ledger-root"><a class="header" href="#check-that-the-commitment-appears-on-the-ledger-or-prior-transition-ie-the-membership-witness-is-valid-with-respect-to-the-ledger-root">Check that the commitment appears on the ledger or prior transition (i.e. the membership witness is valid with respect to the ledger root).</a></h4>
+<ul>
+<li>Ensure each commitment is either 1) in the ledger, 2) from a prior local transition, or 3) a dummy (checking the ledger proof).</li>
+<li>Compute the transition ID declaring the transition ID inclusion proof.</li>
+<li>Compute a candidate transition id performing the transition inclusion proof computation with the transition id CRH and the commitment.</li>
+<li>Compute the transaction ID declaring the transaction ID inclusion proof.</li>
+<li>Compute a candidate transaction id performing the transaction inclusion proof computation with the transaction id CRH and the commitment.</li>
+<li>Determine if the commitment in local checking if the local transitions root matches the candidate transaction ID.</li>
+<li>Determine if the commitment is local or dummy.</li>
+<li>Compute the transaction root declaring the ledger transactions root inclusion proof and performing the ledger transactions root inclusion proof computation with the transactions root CRH and the candidate transaction id.</li>
+<li>Compute the block header root declaring the ledger block header root inclusion proof and performing the ledger block header root inclusion proof computation with the block header root CRH and the candidate ledger transactions root.</li>
+<li>Declare the previous block hash with the ledger proof.</li>
+<li>Construct the block hash preimage with the previous block hash and the candidate block header root.</li>
+<li>Ensure the ledger root inclusion proof is valid declaring the ledger root inclusion proof and performing the ledger root inclusion proof check with the ledger root CRH, the ledger root, the candidate block hash, and the is local or dummy flag.</li>
+</ul>
+<h4 id="check-that-the-input-value-commitment-is-derived-correctly"><a class="header" href="#check-that-the-input-value-commitment-is-derived-correctly">Check that the input value commitment is derived correctly.</a></h4>
+<ul>
+<li>Declare the value commitment randomness.</li>
+<li>Declare the given value commitment.</li>
+<li>Compute the input value commitment candidate with the value commitment randomness.</li>
+<li>Check that the input value commitment is valid by comparing the candidate value commitment and the given value commitment.</li>
+</ul>
+<h4 id="check-that-the-signature-is-valid"><a class="header" href="#check-that-the-signature-is-valid">Check that the signature is valid.</a></h4>
+<ul>
+<li>Construct the signature with the candidate commitment and the input program id.</li>
+<li>Convert the signature to bits.</li>
+<li>Compute the signature the signature with the account signature parameters and the public key, the signature message, and the signature.</li>
+<li>Check the signature verification </li>
+</ul>
+<h2 id="inner-circuit"><a class="header" href="#inner-circuit">Inner Circuit</a></h2>
+<pre><code class="language-mermaid">flowchart
+
+A[InnerCircuit&lt;N&gt;] --&gt; B1[InputPublicVariables&lt;N&gt;]
+A[InnerCircuit&lt;N&gt;] --&gt; B2[InputPrivateVariables&lt;N&gt;]
+</code></pre>
+<h2 id="inner-circuit-generation"><a class="header" href="#inner-circuit-generation">Inner Circuit Generation</a></h2>
+<pre><code class="language-mermaid">flowchart LR
+
+A[Inner Circuit] --&gt; B1
+A[Inner Circuit] --&gt; B2
+A[Inner Circuit] --&gt; B3
+A[Inner Circuit] --&gt; B4
+A[Inner Circuit] --&gt; B5
+A[Inner Circuit] --&gt; B6
+A[Inner Circuit] --&gt; B7
+A[Inner Circuit] --&gt; B8
+A[Inner Circuit] --&gt; B9
+A[Inner Circuit] --&gt; B10
+
+subgraph S1[Constraint system namespaces]
+    B1[zero_value_field_elements]
+    B2[empty_payload_field_elements]
+    B3[empty_program_id_field_elements]
+    B4[ledger_root]
+    B5[local_transitions_root]
+    B6[executable_program_id_bytes]
+    B7[executable_program_id_bytes_field_elements]
+    B8[signature]
+    B9[parameters] --&gt; C1
+    B9[parameters] --&gt; C2
+    B9[parameters] --&gt; C3
+    B9[parameters] --&gt; C4
+    B9[parameters] --&gt; C5
+    B9[parameters] --&gt; C6
+    B9[parameters] --&gt; C7
+    B9[parameters] --&gt; C8
+    B9[parameters] --&gt; C9
+    B9[parameters] --&gt; C10
+    subgraph S2[Parameters constraint system namespaces]
+    direction LR
+        C1[account_encryption_parameters]
+        C2[account_signature_parameters]
+        C3[record_commitment_parameters]
+        C4[value_commitment_parameters]
+        C5[transition_id_crh]
+        C6[transaction_id_crh]
+        C7[transactions_root_crh]
+        C8[block_header_root_crh]
+        C9[block_hash_crh]
+        C10[ledger_root_crh]
+    end
+    B10[Input record] --&gt; D1
+    B10[Input record] --&gt; D2
+    B10[Input record] --&gt; D3
+    B10[Input record] --&gt; D4
+    B10[Input record] --&gt; D5
+    B10[Input record] --&gt; D6
+    B10[Input record] --&gt; D7
+    subgraph S3[Input record constraint system namespaces]
+        direction LR
+        D1[given_owner]
+        D2[given_is_dummy]
+        D3[given_value_bytes]
+        D4[given_payload]
+        D5[given_program_id]
+        D6[given_randomizer]
+        D7[given_record_viewkey]
+    end
+    B11[commitment] --&gt; S4
+    subgraph S4[Commitment constraint system namespaces]
+        direction LR
+        E1[given_is_dummy_bytes]
+        E2[given_value_field_elements]
+        E3[given_payload_field_elements]
+        E4[given_program_id_field_elements]
+        
+        E3A1[a]
+        E4A1[a]
+        E3
+        E3
+        E3
+    end
+end
+</code></pre>
+<h2 id="yet-to-be-answered-questions"><a class="header" href="#yet-to-be-answered-questions">Yet to be answered questions</a></h2>
+<p>...</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="general-overview-of-virtualmachineexecute"><a class="header" href="#general-overview-of-virtualmachineexecute">General Overview of <code>VirtualMachine::execute</code></a></h1>
+<p>When the VM executes a request it first checks the validity of it. </p>
+<p>A request is defined as the following struct:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Request&lt;N: Network&gt; {
+    /// The records being consumed.
+    records: Vec&lt;Record&lt;N&gt;&gt;,
+    /// The inclusion proofs of ledger-consumed records.
+    ledger_proofs: Vec&lt;LedgerProof&lt;N&gt;&gt;,
+    /// The operation being performed.
+    operation: Operation&lt;N&gt;,
+    /// The network fee being paid.
+    fee: AleoAmount,
+    /// The signatures for the request (each record will have one).
+    signatures: Vec&lt;N::AccountSignature&gt;,
+    /// The visibility of the operation.
+    is_public: bool,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>A valid request means:</p>
+<ul>
+<li>the amound of records it contains is less than a predefined constant (<code>N::NUM_INPUTS</code>),</li>
+<li>the number of ledger proofs is the same as the number of records,</li>
+<li>all records have the same owner that same owner is the one who made the request,</li>
+<li>the records contain a value that is at least the value of the fee,</li>
+<li>the total value is equivalent to the sum of the aleo amount plus the fee,</li>
+<li>the records vector is not empty,</li>
+<li>if it does not contain a program id then it does not contain a function id,</li>
+<li>if it contains a program id then the function id is in the specific program, </li>
+<li>the record commitments are included in the ledger proof,</li>
+<li>the signatures are valid.</li>
+</ul>
+<p>Once the request validity is asserted, the adecuate operation is computed, that can be a noop, coinbase, transfer or evaluate operation. The response is then built with the resulting operation.</p>
+<!-- TODO: Explain all operation enum -->
+<p>A response is structured like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Response&lt;N: Network&gt; {
+    /// The ID of the transition.
+    transition_id: N::TransitionID,
+    /// The records being produced.
+    records: Vec&lt;Record&lt;N&gt;&gt;,
+    /// The record encryption randomness.
+    encryption_randomness: Vec&lt;EncryptionRandomness&lt;N&gt;&gt;,
+    /// A value balance is the difference between the input and output record values.
+    value_balance: AleoAmount,
+    /// The commitments on the input record values.
+    input_value_commitments: Vec&lt;N::ValueCommitment&gt;,
+    /// The commitments on the output record values.
+    output_value_commitments: Vec&lt;N::ValueCommitment&gt;,
+    /// The randomness used to generate the input value commitments.
+    input_value_commitment_randomness: Vec&lt;N::ProgramScalarField&gt;,
+    /// The randomness used to generate the output value commitments.
+    output_value_commitment_randomness: Vec&lt;N::ProgramScalarField&gt;,
+    /// The value balance commitment.
+    value_balance_commitment: N::ValueBalanceCommitment,
+    /// The events emitted from the execution.
+    events: Vec&lt;Event&lt;N&gt;&gt;,
+<span class="boring">}
+</span></code></pre></pre>
+<p>Once the response has been created, the tests of the input and output arithmetic circuits (input and output proofs) are computed.</p>
+<p>An input circuit is basically in charge of generating the verification of the validity of the input variables (contained in the request). And an output circuit is basically in charge of generating the verification of the validity of the output variables (response).</p>
+<!-- TODO: Explain in depth how this happens -->
+<p>With the computed proofs an execution is computed. This execution with the request and the response will compose a transition. This transition will be pushed to the actual virtual machine state transition collection.</p>
+<!-- TODO: Explain Transitions in depth -->
+<div style="break-before: page; page-break-before: always;"></div><h1 id="snarkos"><a class="header" href="#snarkos">snarkOS</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="mermaid.min.js"></script>
+        <script type="text/javascript" src="mermaid-init.js"></script>
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>

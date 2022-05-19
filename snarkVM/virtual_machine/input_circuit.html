@@ -1,0 +1,539 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>input_circuit - Aleo Book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../../snarkVM/snarkVM.html"><strong aria-hidden="true">2.</strong> snarkVM</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../snarkVM/dpc/dpc.html"><strong aria-hidden="true">2.1.</strong> dpc</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../snarkVM/dpc/ledger.html"><strong aria-hidden="true">2.1.1.</strong> ledger</a></li><li class="chapter-item expanded "><a href="../../snarkVM/dpc/account.html"><strong aria-hidden="true">2.1.2.</strong> account</a></li></ol></li><li class="chapter-item expanded "><a href="../../snarkVM/virtual_machine/introduction.html"><strong aria-hidden="true">2.2.</strong> virtual_machine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../snarkVM/virtual_machine/execution.html"><strong aria-hidden="true">2.2.1.</strong> execution</a></li><li class="chapter-item expanded "><a href="../../snarkVM/virtual_machine/input_circuit.html" class="active"><strong aria-hidden="true">2.2.2.</strong> input_circuit</a></li><li class="chapter-item expanded "><a href="../../snarkVM/virtual_machine/virtual_machine.html"><strong aria-hidden="true">2.2.3.</strong> vritual_machine</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../snarkOS/snarkOS.html"><strong aria-hidden="true">3.</strong> snarkOS</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Aleo Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="input-circuit"><a class="header" href="#input-circuit">Input Circuit</a></h1>
+<h2 id="what-is-an-input-circuit"><a class="header" href="#what-is-an-input-circuit">What is an input circuit?</a></h2>
+<p>An input circuit is a constraint synthesizer that can generate constraints with public and private variables for a given constraint system.</p>
+<p>This definition may be a lot to take in at first, so lets try explain a little bit the concepts within it. But its worth saying that I'll only explain the concepts that are relevant to snarkVM's implementation, I'll leave a link to the concepts that are independent from snarkVM's implementation.</p>
+<blockquote>
+<p>Computations are expressed in terms of rank-1 constraint systems <a href="https://docs.circom.io/background/background/#rank-1-constraint-system">R1CS</a>.</p>
+</blockquote>
+<h3 id="constraint-synthesizer"><a class="header" href="#constraint-synthesizer">Constraint Synthesizer</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Computations are expressed in terms of rank-1 constraint systems (R1CS).
+/// The `generate_constraints` method is called to generate constraints for
+/// both CRS generation and for proving.
+pub trait ConstraintSynthesizer&lt;F: Field&gt; {
+    /// Drives generation of new constraints inside `CS`.
+    fn generate_constraints&lt;CS: ConstraintSystem&lt;F&gt;&gt;(&amp;self, cs: &amp;mut CS) -&gt; Result&lt;(), SynthesisError&gt;;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>A Constraint Synthesizer drives the generation of new constraints inside a Constraint System.</p>
+<h3 id="constraint-system"><a class="header" href="#constraint-system">Constraint System</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Represents a constraint system which can have new variables
+/// allocated and constrains between them formed.
+pub trait ConstraintSystem&lt;F: Field&gt;: Sized {
+    /// Represents the type of the &quot;root&quot; of this constraint system
+    /// so that nested namespaces can minimize indirection.
+    type Root: ConstraintSystem&lt;F&gt;;
+
+    /// Return the &quot;one&quot; input variable
+    fn one() -&gt; Variable {
+        Variable::new_unchecked(Index::Public(0))
+    }
+
+    /// Allocate a private variable in the constraint system. The provided
+    /// function is used to determine the assignment of the variable. The
+    /// given `annotation` function is invoked in testing contexts in order
+    /// to derive a unique name for this variable in the current namespace.
+    fn alloc&lt;FN, A, AR&gt;(&amp;mut self, annotation: A, f: FN) -&gt; Result&lt;Variable, SynthesisError&gt;
+    where
+        FN: FnOnce() -&gt; Result&lt;F, SynthesisError&gt;,
+        A: FnOnce() -&gt; AR,
+        AR: AsRef&lt;str&gt;;
+
+    /// Allocate a public variable in the constraint system. The provided
+    /// function is used to determine the assignment of the variable.
+    fn alloc_input&lt;FN, A, AR&gt;(&amp;mut self, annotation: A, f: FN) -&gt; Result&lt;Variable, SynthesisError&gt;
+    where
+        FN: FnOnce() -&gt; Result&lt;F, SynthesisError&gt;,
+        A: FnOnce() -&gt; AR,
+        AR: AsRef&lt;str&gt;;
+
+    /// Enforce that `A` * `B` = `C`. The `annotation` function is invoked in
+    /// testing contexts in order to derive a unique name for the constraint
+    /// in the current namespace.
+    fn enforce&lt;A, AR, LA, LB, LC&gt;(&amp;mut self, annotation: A, a: LA, b: LB, c: LC)
+    where
+        A: FnOnce() -&gt; AR,
+        AR: AsRef&lt;str&gt;,
+        LA: FnOnce(LinearCombination&lt;F&gt;) -&gt; LinearCombination&lt;F&gt;,
+        LB: FnOnce(LinearCombination&lt;F&gt;) -&gt; LinearCombination&lt;F&gt;,
+        LC: FnOnce(LinearCombination&lt;F&gt;) -&gt; LinearCombination&lt;F&gt;;
+
+    /// Create a new (sub)namespace and enter into it. Not intended
+    /// for downstream use; use `namespace` instead.
+    fn push_namespace&lt;NR, N&gt;(&amp;mut self, name_fn: N)
+    where
+        NR: AsRef&lt;str&gt;,
+        N: FnOnce() -&gt; NR;
+
+    /// Exit out of the existing namespace. Not intended for
+    /// downstream use; use `namespace` instead.
+    fn pop_namespace(&amp;mut self);
+
+    /// Gets the &quot;root&quot; constraint system, bypassing the namespacing.
+    /// Not intended for downstream use; use `namespace` instead.
+    fn get_root(&amp;mut self) -&gt; &amp;mut Self::Root;
+
+    /// Begin a namespace for this constraint system.
+    fn ns&lt;NR, N&gt;(&amp;mut self, name_fn: N) -&gt; Namespace&lt;'_, F, Self::Root&gt;
+    where
+        NR: AsRef&lt;str&gt;,
+        N: FnOnce() -&gt; NR,
+    {
+        self.get_root().push_namespace(name_fn);
+
+        Namespace(self.get_root(), PhantomData)
+    }
+
+    /// Output the number of constraints in the system.
+    fn num_constraints(&amp;self) -&gt; usize;
+
+    /// Output the number of public input variables to the system.
+    fn num_public_variables(&amp;self) -&gt; usize;
+
+    /// Output the number of private input variables to the system.
+    fn num_private_variables(&amp;self) -&gt; usize;
+
+    /// Output whether the constraint system is in the setup mode.
+    fn is_in_setup_mode(&amp;self) -&gt; bool;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>A constraint system can have new variables (signals) allocated and constrains that are formed between them. 
+Structs that implement the <code>ConstraintSystem</code> trait can:</p>
+<ul>
+<li>Allocate private and public variables.</li>
+<li>Enforce that  A * B = C, being A, B and C linear combinations with coefficients in a given field.</li>
+<li>Enter into new (sub)namespaces and exit from them.</li>
+<li>Begin a namespace for its system.</li>
+</ul>
+<h2 id="namespace"><a class="header" href="#namespace">Namespace</a></h2>
+<p>Namespaces are a kind of constraint system which borrows a constraint system (pushing a namespace context) and, when dropped, pops out  the namespace context. 
+Namespaces can never be a root constraint system.</p>
+<p>The structure an input circuit is the following:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InputCircuit&lt;N: Network&gt; {
+    public: InputPublicVariables&lt;N&gt;,
+    private: InputPrivateVariables&lt;N&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="input-public-variable"><a class="header" href="#input-public-variable">Input Public Variable</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InputPublicVariables&lt;N: Network&gt; {
+    /// The serial number of the input record.
+    serial_number: N::SerialNumber,
+    /// The commitments on the input record value.
+    input_value_commitment: N::ValueCommitment,
+    ledger_root: N::LedgerRoot,
+    local_transitions_root: N::TransactionID,
+    // These are required in natively verifying an inner circuit proof.
+    // However for verification in the outer circuit, these must be provided as witness.
+    /// Program ID
+    pub(super) program_id: Option&lt;N::ProgramID&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Input public variables are structs that contain the <em>serial number</em> of an input record, the <em>input value commitment</em> that is the value of the commitments on the input record value, the <em>ledger root</em>, the <em>local transactions root</em> of type <code>N::TransactionID</code> and a <em>program id</em> of type <code>N::ProgramID</code>. The last are required in natively verifying an input circuit proof. However for verification in the outer circuit, these might be provided as witness.
+They can be created blank with default values using <code>InputVariables::blank</code> or with specific values using <code>InputVariables::new</code> passing the pertinent arguments for its building.
+The can be turned into field elements, this is a vector of <code>InnerScalarField</code>s.</p>
+<h3 id="input-private-variable"><a class="header" href="#input-private-variable">Input Private Variable</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct InputPrivateVariables&lt;N: Network&gt; {
+    // Inputs.
+    pub(super) input_record: Record&lt;N&gt;,
+    pub(super) ledger_proof: LedgerProof&lt;N&gt;,
+    pub(super) signature: N::AccountSignature,
+
+    pub(super) input_value_commitment_randomness: N::ProgramScalarField,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Input private variables are structs that contain an <em>input record</em>, a <em>ledger proof</em>, a <em>signature</em> and an <em>input value commitment randomness</em>, that is a <code>ProgramScalarField</code> (an alias for <code>PrimeField</code> trait).
+Like public variables the can be blank or not.</p>
+<p>Well, now we have a better context. We know what it means to be an input circuit, what it does, who interact, and where it works. But, how does it generate a constraint?</p>
+<h3 id="constraints-generation"><a class="header" href="#constraints-generation">Constraints Generation</a></h3>
+<p>To generate constraints means:</p>
+<ol>
+<li>Declare this variables as namespaces and field elements.</li>
+<li>Check that the record is well-formed.</li>
+<li>Check that the serial number is derived correctly.</li>
+<li>Check that the commitment appears on the ledger or prior transition (i.e. the membership witness is valid with respect to the ledger root). </li>
+<li>Check that the input value commitment is derived correctly.</li>
+<li>Check that the signature is valid.</li>
+</ol>
+<p>For a more in-deph understanding of the constraints generation, this is the complete workflow:</p>
+<h4 id="declare-this-variables-as-namespaces-and-field-elements"><a class="header" href="#declare-this-variables-as-namespaces-and-field-elements">Declare this variables as namespaces and field elements</a></h4>
+<ul>
+<li>Declare a ledger root.</li>
+<li>Declare the local transitions root.</li>
+<li>Declare the program ID.</li>
+<li>Declare the transition signature.</li>
+<li>Declare parameters.
+<ul>
+<li>Declare the account encryption parameters.</li>
+<li>Declare the account signature parameters.</li>
+<li>Declare the record commitment parameters.</li>
+<li>Declare the record value commitment parameters.</li>
+<li>Declare the transition ID CRH parameters.</li>
+<li>Declare the transaction CRH parameters.</li>
+<li>Declare the transactions root CRH parameters.</li>
+<li>Declare the block header root CRH parameters.</li>
+<li>Declare the block hash CRH parameters.</li>
+<li>Declare the ledger root CRH parameters.</li>
+</ul>
+</li>
+<li>Declare record contents.
+<em>There is no need to check that commitments, keys and hashes are in prime order subgroup because the commitment and CRH parameters are trusted, and so when we recompute these, the newly computed values will always be in correct subgroup. If the input cm, pk, or hash is incorrect, then it will not match the computed equivalent.</em>
+<ul>
+<li>Declare the given owner.</li>
+<li>Declare the given is dummy.</li>
+<li>Declare the given values in bytes.</li>
+<li>Declare the given payload (empty if the record does not have one).</li>
+<li>Declare the given program id (empty program id if the record does not have one).</li>
+<li>Declare the given randomizer.</li>
+<li>Declare the given record view key.</li>
+</ul>
+</li>
+</ul>
+<h4 id="check-that-the-record-is-well-formed"><a class="header" href="#check-that-the-record-is-well-formed">Check that the record is well-formed.</a></h4>
+<ul>
+<li>Convert the owner, dummy flag, value, payload, program ID, and randomizer into bits.
+<ul>
+<li>Convert given is dummy to bytes.</li>
+<li>Convert given value to field elements.</li>
+<li>Convert given payload to field elements.</li>
+<li>Convert given program ID to field elements.</li>
+<li>Perform noop safety checks.
+<ul>
+<li>If the input record is empty, enforce it has a value of 0.</li>
+<li>If the input record is empty, enforce it has an empty payload.</li>
+<li>If the input record is empty, enforce it has an empty program ID.</li>
+<li>Ensure the program ID matches the declared program ID.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Compute the record commitment and check that it matches the declared commitment.
+<ul>
+<li>Declare given owner gadget.</li>
+<li>Encode input value (given value in bytes).</li>
+<li>Encode input payload (given payload).</li>
+<li>Produce a ciphertext Check encryption from symmetric key: a ciphertext is produced out of the given record viewkey and the plaintext (the plaintext includes the encoded given value and the encoded given payload).</li>
+<li>Produce the record view key commitment with the given record view key.</li>
+<li>Construct a commitment input with the given randomizer, the record view key commitment, the ciphertext, the given program id and the given is dummy flag (all as bytes).</li>
+<li>Build the candidate commitment with the record commitment parameters and the commitment input.</li>
+</ul>
+</li>
+</ul>
+<h4 id="check-that-the-serial-number-is-derived-correctly"><a class="header" href="#check-that-the-serial-number-is-derived-correctly">Check that the serial number is derived correctly.</a></h4>
+<ul>
+<li>Compute a candidate serial number out of the computed key for a signature and the commitment. </li>
+<li>Declare given serial number with the public variable's serial number.</li>
+<li>Check that the candidate serial number is equal to the given serial number.</li>
+</ul>
+<h4 id="check-that-the-commitment-appears-on-the-ledger-or-prior-transition-ie-the-membership-witness-is-valid-with-respect-to-the-ledger-root"><a class="header" href="#check-that-the-commitment-appears-on-the-ledger-or-prior-transition-ie-the-membership-witness-is-valid-with-respect-to-the-ledger-root">Check that the commitment appears on the ledger or prior transition (i.e. the membership witness is valid with respect to the ledger root).</a></h4>
+<ul>
+<li>Ensure each commitment is either 1) in the ledger, 2) from a prior local transition, or 3) a dummy (checking the ledger proof).</li>
+<li>Compute the transition ID declaring the transition ID inclusion proof.</li>
+<li>Compute a candidate transition id performing the transition inclusion proof computation with the transition id CRH and the commitment.</li>
+<li>Compute the transaction ID declaring the transaction ID inclusion proof.</li>
+<li>Compute a candidate transaction id performing the transaction inclusion proof computation with the transaction id CRH and the commitment.</li>
+<li>Determine if the commitment in local checking if the local transitions root matches the candidate transaction ID.</li>
+<li>Determine if the commitment is local or dummy.</li>
+<li>Compute the transaction root declaring the ledger transactions root inclusion proof and performing the ledger transactions root inclusion proof computation with the transactions root CRH and the candidate transaction id.</li>
+<li>Compute the block header root declaring the ledger block header root inclusion proof and performing the ledger block header root inclusion proof computation with the block header root CRH and the candidate ledger transactions root.</li>
+<li>Declare the previous block hash with the ledger proof.</li>
+<li>Construct the block hash preimage with the previous block hash and the candidate block header root.</li>
+<li>Ensure the ledger root inclusion proof is valid declaring the ledger root inclusion proof and performing the ledger root inclusion proof check with the ledger root CRH, the ledger root, the candidate block hash, and the is local or dummy flag.</li>
+</ul>
+<h4 id="check-that-the-input-value-commitment-is-derived-correctly"><a class="header" href="#check-that-the-input-value-commitment-is-derived-correctly">Check that the input value commitment is derived correctly.</a></h4>
+<ul>
+<li>Declare the value commitment randomness.</li>
+<li>Declare the given value commitment.</li>
+<li>Compute the input value commitment candidate with the value commitment randomness.</li>
+<li>Check that the input value commitment is valid by comparing the candidate value commitment and the given value commitment.</li>
+</ul>
+<h4 id="check-that-the-signature-is-valid"><a class="header" href="#check-that-the-signature-is-valid">Check that the signature is valid.</a></h4>
+<ul>
+<li>Construct the signature with the candidate commitment and the input program id.</li>
+<li>Convert the signature to bits.</li>
+<li>Compute the signature the signature with the account signature parameters and the public key, the signature message, and the signature.</li>
+<li>Check the signature verification </li>
+</ul>
+<h2 id="inner-circuit"><a class="header" href="#inner-circuit">Inner Circuit</a></h2>
+<pre><code class="language-mermaid">flowchart
+
+A[InnerCircuit&lt;N&gt;] --&gt; B1[InputPublicVariables&lt;N&gt;]
+A[InnerCircuit&lt;N&gt;] --&gt; B2[InputPrivateVariables&lt;N&gt;]
+</code></pre>
+<h2 id="inner-circuit-generation"><a class="header" href="#inner-circuit-generation">Inner Circuit Generation</a></h2>
+<pre><code class="language-mermaid">flowchart LR
+
+A[Inner Circuit] --&gt; B1
+A[Inner Circuit] --&gt; B2
+A[Inner Circuit] --&gt; B3
+A[Inner Circuit] --&gt; B4
+A[Inner Circuit] --&gt; B5
+A[Inner Circuit] --&gt; B6
+A[Inner Circuit] --&gt; B7
+A[Inner Circuit] --&gt; B8
+A[Inner Circuit] --&gt; B9
+A[Inner Circuit] --&gt; B10
+
+subgraph S1[Constraint system namespaces]
+    B1[zero_value_field_elements]
+    B2[empty_payload_field_elements]
+    B3[empty_program_id_field_elements]
+    B4[ledger_root]
+    B5[local_transitions_root]
+    B6[executable_program_id_bytes]
+    B7[executable_program_id_bytes_field_elements]
+    B8[signature]
+    B9[parameters] --&gt; C1
+    B9[parameters] --&gt; C2
+    B9[parameters] --&gt; C3
+    B9[parameters] --&gt; C4
+    B9[parameters] --&gt; C5
+    B9[parameters] --&gt; C6
+    B9[parameters] --&gt; C7
+    B9[parameters] --&gt; C8
+    B9[parameters] --&gt; C9
+    B9[parameters] --&gt; C10
+    subgraph S2[Parameters constraint system namespaces]
+    direction LR
+        C1[account_encryption_parameters]
+        C2[account_signature_parameters]
+        C3[record_commitment_parameters]
+        C4[value_commitment_parameters]
+        C5[transition_id_crh]
+        C6[transaction_id_crh]
+        C7[transactions_root_crh]
+        C8[block_header_root_crh]
+        C9[block_hash_crh]
+        C10[ledger_root_crh]
+    end
+    B10[Input record] --&gt; D1
+    B10[Input record] --&gt; D2
+    B10[Input record] --&gt; D3
+    B10[Input record] --&gt; D4
+    B10[Input record] --&gt; D5
+    B10[Input record] --&gt; D6
+    B10[Input record] --&gt; D7
+    subgraph S3[Input record constraint system namespaces]
+        direction LR
+        D1[given_owner]
+        D2[given_is_dummy]
+        D3[given_value_bytes]
+        D4[given_payload]
+        D5[given_program_id]
+        D6[given_randomizer]
+        D7[given_record_viewkey]
+    end
+    B11[commitment] --&gt; S4
+    subgraph S4[Commitment constraint system namespaces]
+        direction LR
+        E1[given_is_dummy_bytes]
+        E2[given_value_field_elements]
+        E3[given_payload_field_elements]
+        E4[given_program_id_field_elements]
+        
+        E3A1[a]
+        E4A1[a]
+        E3
+        E3
+        E3
+    end
+end
+</code></pre>
+<h2 id="yet-to-be-answered-questions"><a class="header" href="#yet-to-be-answered-questions">Yet to be answered questions</a></h2>
+<p>...</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../snarkVM/virtual_machine/execution.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../snarkVM/virtual_machine/virtual_machine.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../snarkVM/virtual_machine/execution.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../snarkVM/virtual_machine/virtual_machine.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../../mermaid.min.js"></script>
+        <script type="text/javascript" src="../../mermaid-init.js"></script>
+    </body>
+</html>

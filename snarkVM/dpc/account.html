@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>account - Aleo Book</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../../snarkVM/snarkVM.html"><strong aria-hidden="true">2.</strong> snarkVM</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../snarkVM/dpc/dpc.html"><strong aria-hidden="true">2.1.</strong> dpc</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../snarkVM/dpc/ledger.html"><strong aria-hidden="true">2.1.1.</strong> ledger</a></li><li class="chapter-item expanded "><a href="../../snarkVM/dpc/account.html" class="active"><strong aria-hidden="true">2.1.2.</strong> account</a></li></ol></li><li class="chapter-item expanded "><a href="../../snarkVM/virtual_machine/introduction.html"><strong aria-hidden="true">2.2.</strong> virtual_machine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../snarkVM/virtual_machine/execution.html"><strong aria-hidden="true">2.2.1.</strong> execution</a></li><li class="chapter-item expanded "><a href="../../snarkVM/virtual_machine/input_circuit.html"><strong aria-hidden="true">2.2.2.</strong> input_circuit</a></li><li class="chapter-item expanded "><a href="../../snarkVM/virtual_machine/virtual_machine.html"><strong aria-hidden="true">2.2.3.</strong> vritual_machine</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../snarkOS/snarkOS.html"><strong aria-hidden="true">3.</strong> snarkOS</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Aleo Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="account"><a class="header" href="#account">Account</a></h1>
+<h2 id="inside-account"><a class="header" href="#inside-account">Inside Account</a></h2>
+<ul>
+<li>account_format</li>
+<li>account</li>
+<li>address</li>
+<li>compute_key</li>
+<li>private_key</li>
+<li>view_key</li>
+</ul>
+<h2 id="account-1"><a class="header" href="#account-1">Account</a></h2>
+<p>The account is an struct containing the following fields</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Account&lt;N: Network&gt; {
+    private_key: PrivateKey&lt;N&gt;,
+    view_key: ViewKey&lt;N&gt;,
+    address: Address&lt;N&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This can be created with the <code>new</code> function that receives an rng (random number generator) and create a new account from a new <code>PrivateKey</code>.</p>
+<p>It has some getters for every field of the account struct <code>private_key</code>,<code>view_key</code> and <code>address</code>. The first ones returns a reference and the address one returns an owned address.</p>
+<p>The account implements the <code>From</code> trait too, that receives an already created <code>PrivateKey</code> to create an account. This would create the address and view key from that private key and then return a new account with that data.</p>
+<p>In the end there are <code>Debug</code> and <code>Display</code> implementations for the account, with the following format 
+<code>Account {{private_key: &quot;&quot;, view_key: &quot;&quot;, address: &quot;&quot;}}</code></p>
+<h2 id="address"><a class="header" href="#address">Address</a></h2>
+<p>This is a struct representing the address for an account containing the corresponding key.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Address&lt;N: Network&gt;(&lt;N::AccountEncryptionScheme as EncryptionScheme&gt;::PublicKey);
+<span class="boring">}
+</span></code></pre></pre>
+<p>It has different ways to create an address. From a private key, from a compute key and from a view key.
+The functions <code>from_private_key</code>, <code>from_compute_key</code> and <code>from_view_key</code>. It also has implementations for <code>From</code> trait with all the different keys.</p>
+<p><strong>question:</strong> Is this really necessary? we can keep the functions or the from trait.</p>
+<p>The implementation of the one that receives the private key just transform that key to a compute key and then generates the encryption key that the address will use.
+Otherwise the one that receives the view key generates a public key with that view key and use that as the address that the addres will use.</p>
+<p>It has a <code>verify_signature</code> function that verifies a signature on a message signed by the account key. This function returns true or false depending if the signature have signed a given message or false if not. This function has two parameters: </p>
+<ul>
+<li>the first one is the message: an array of bools representing the sequence of bits of the message that was signed.</li>
+<li>The other it's the signature that we want to verify.
+This function calls a verify function defined in signature module that looks like this:</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>///
+    /// Verifies (c == c') &amp;&amp; (public_key == G^sk_sig G^r_sig G^sk_prf) where:
+    ///     c' := Hash(G^sk_sig G^r_sig G^sk_prf, G^s G^sk_sig^c, message)
+    ///
+    fn verify(&amp;self, public_key: &amp;Self::PublicKey, message: &amp;[bool], signature: &amp;Self::Signature) -&gt; Result&lt;bool&gt; {
+        // Extract the signature contents.
+        let AleoSignature { prover_response, verifier_challenge, root_public_key, root_randomizer } = signature;
+
+        // Recover G^sk_sig.
+        let g_sk_sig = Self::recover_from_x_coordinate(root_public_key)?;
+
+        // Compute G^sk_sig^c.
+        let g_sk_sig_c = self.scalar_multiply(g_sk_sig, verifier_challenge);
+
+        // Compute G^r := G^s G^sk_sig^c.
+        let g_r = (self.g_scalar_multiply(prover_response) + g_sk_sig_c).to_affine();
+
+        // Compute the candidate verifier challenge.
+        let candidate_verifier_challenge = {
+            // Construct the hash input (G^sk_sig G^r_sig G^sk_prf, G^r, message).
+            let mut preimage = vec![];
+            preimage.extend_from_slice(&amp;public_key.to_x_coordinate().to_field_elements()?);
+            preimage.extend_from_slice(&amp;g_r.to_x_coordinate().to_field_elements()?);
+            preimage.push(TE::BaseField::from(message.len() as u128));
+            preimage.extend_from_slice(&amp;message.to_field_elements()?);
+
+            // Hash to derive the verifier challenge.
+            self.hash_to_scalar_field(&amp;preimage)
+        };
+
+        // Recover G^r_sig.
+        let g_r_sig = Self::recover_from_x_coordinate(root_randomizer)?;
+
+        // Compute the candidate public key as (G^sk_sig G^r_sig G^sk_prf).
+        let candidate_public_key = {
+            // Compute sk_prf := RO(G^sk_sig || G^r_sig).
+            let sk_prf = self.hash_to_scalar_field(&amp;[g_sk_sig.to_x_coordinate(), g_r_sig.to_x_coordinate()]);
+
+            // Compute G^sk_prf.
+            let g_sk_prf = self.g_scalar_multiply(&amp;sk_prf);
+
+            // Compute G^sk_sig G^r_sig G^sk_prf.
+            g_sk_sig.to_projective() + g_sk_prf + g_r_sig.to_projective()
+        };
+
+        Ok(*verifier_challenge == candidate_verifier_challenge &amp;&amp; *public_key == candidate_public_key)
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../snarkVM/dpc/ledger.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../snarkVM/virtual_machine/introduction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../snarkVM/dpc/ledger.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../snarkVM/virtual_machine/introduction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../../mermaid.min.js"></script>
+        <script type="text/javascript" src="../../mermaid-init.js"></script>
+    </body>
+</html>
