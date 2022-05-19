@@ -1,25 +1,24 @@
-name: github pages
-
+name: Github Pages
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
-
 jobs:
-  deploy:
+  run:
     runs-on: ubuntu-20.04
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
-
-      - name: Setup mdBook
-        uses: peaceiris/actions-mdbook@v1
+      - uses: jontze/action-mdbook@v1
         with:
-          mdbook-version: 'latest'
+          token: ${{secrets.GITHUB_TOKEN}}
+          use-mermaid: true
+      - name: Show mdbook version
+        run: mdbook --version
+      - name: Show mermaid version
+        run: mdbook-mermaid --version
 
-      - run: mdbook build
+      - uses: actions/checkout@v2
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
