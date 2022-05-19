@@ -1,6 +1,6 @@
 # Operation
 
-The operatio enum has 4 variants
+The operation enum has four variants.
 
 ```rust
 pub enum Operation<N: Network> {
