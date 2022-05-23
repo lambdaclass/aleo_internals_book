@@ -17,7 +17,7 @@ pub struct Account<N: Network> {
 }
 ```
 
-An account can be created with the `new` function that receives an rng (random number generator) and creates a new account from a new `PrivateKey`.
+This can be created with the `new` function that receives a random number generator (rng)  and create a new account from a new `PrivateKey`.
 
 It has some getters for every field of the account struct `private_key`, `view_key`, and `address`. The first one returns a reference and the address one returns an owned address.
 
@@ -48,8 +48,8 @@ The address can be created with a string too, the string being the address of th
 - The address prefix must be "aleo1". 
 With that specific String, it generates the proper key associated with that address using elliptic curves cryptography.
 
-Then there's a `verify_signature` function that verifies a signature on a message signed by the account key. This function returns true or false depending on if the signature has signed a given message or false if not. This function has two parameters: 
-- the first one is the message: an array of booleans representing the sequence of bits of the message that was signed.
+It has a `verify_signature` function that verifies a signature on a message signed by the account key. This function returns true or false depending if the signature have signed a given message (true) or if not (false). This function has two parameters: 
+- the first one is the message: an array of bools representing the sequence of bits of the message that was signed.
 - The other it's the signature that we want to verify.
 This function calls a verify function defined in the signature module that we'll see in that chapter.
 
@@ -113,7 +113,7 @@ The private key has to match some specific characteristics to be a valid private
 
 ## View Key 
 
-The view key is used to decrypt account records which are encrypted under the user's account address. Is derived from an account private key. This key is useful to access every record in a user's account, so it could be used by third parties to verify the history of an account.
+The view key is used to decrypt account records which are encrypted under the user's account address. It's derived from an account private key. This key is useful to access every record in a user's account, so it could be used by third parties to verify the history of an account.
 The view key is represented with a tuple struct containing the corresponding private key as the element of the tuple:
 
 ```rust

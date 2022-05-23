@@ -24,7 +24,7 @@ pub struct Request<N: Network> {
 A valid request means:
 - the amound of records it contains is less than a predefined constant (`N::NUM_INPUTS`),
 - the number of ledger proofs is the same as the number of records,
-- all records have the same owner that same owner is the one who made the request,
+- all records have the same owner and it's the one who made the request,
 - the records contain a value that is at least the value of the fee,
 - the total value is equivalent to the sum of the aleo amount plus the fee,
 - the records vector is not empty,
@@ -65,7 +65,7 @@ pub struct Response<N: Network> {
 
 Once the response has been created, the tests of the input and output arithmetic circuits (input and output proofs) are computed.
 
-An input circuit is basically in charge of generating the verification of the validity of the input variables (contained in the request). And an output circuit is basically in charge of generating the verification of the validity of the output variables (response).
+An input circuit is basically in charge of generating the verification of the validity of the input variables (contained in the request). An output circuit is basically in charge of generating the verification of the validity of the output variables (response).
 
 <!-- TODO: Explain in depth how this happens -->
 
