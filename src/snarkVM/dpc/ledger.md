@@ -64,7 +64,7 @@ A transaction needs to reference the canonical chain's root, and all of its seri
 
 The juciest function is `mine_next_block` which performs the following steps:
  
-- Ensure that the new timestamp is ahead of the previous timestamp (it's more of a fix it if it is not ahead, it won't throw an error if it is behind).
+- Ensure that the new timestamp is ahead of the previous timestamp (it's more of a fix if it's not ahead, it won't throw an error if it's behind).
 - Compute the block difficulty (currently uses the height as well as some of the genesis_block parameters)
 - Compute the cumulative weight $\sum_{b \in \text{canonical_chain}} u64_{\text{max}} / \text{difficulty}_b$ including the candidate block.
 - Construct the new block transactions. Build coinbase and block transactions containing the coinbase and the mempool transactions (there's a `VirtualMaching::execute` call behind the scenes)
@@ -105,11 +105,11 @@ It runs some verifications by ensuring:
 - The given block timestamp is after the current timestamp
 - The given block difficulty target is correct
 - The expected cumulative weight is computed correctly
-- The given cumulative weight is correct.
+- The given cumulative weight is correct
 - Each transaction in the block does not already exist in the ledger
 - Each transaction's ledger root is the same as the ledger's
 - Each serial number does not exist in the ledger
-- Each commitment does not exist in the ledger
+- Each commitment does not exist in the ledger.
 
 And after that it attempts to add the block in each structure.
 
@@ -132,7 +132,7 @@ And after that it attempts to add the block in each structure.
 **question**: why does this execute atomically? Did they actually meant that since the self is cloned you don't have race conditions? because the block does not execute atomically. 
     Is it possible to add two different blocks with the same height twice? -> No, since each `add_next` call overwrites the whole structure
     
-The next function to take a look at is the to_ledger_proof. This does a bunch of things but succintly, it computes a few other proofs:
+The next function to take a look at is the to_ledger_proof. This does a bunch of things but succinctly, it computes a few other proofs:
 
 ```mermaid
 flowchart LR
@@ -149,7 +149,7 @@ e[TransactionsInclusionProof] --> h[Transactions::to_transactions_inclusion_proo
 f[LocalInclusionProof] --> i[Transitions::to_local_proof]
 b[LedgerRootInclusionProof] --> j[LedgerTree::to_ledger_inclusion_proof]
 
-i[Transitions::to_local_proof] --> k[Transition::to_transition_inclusion_proof]
+i[Transitions::to_local_proof] --> k[Transitions::to_transition_inclusion_proof]
 i[Transitions::to_local_proof] --> l[Transitions::to_transition_inclusion_proof]
 
 ```
@@ -179,7 +179,7 @@ pub struct LedgerTree<N: Network> {
 
 The `tree` is the actual Merkle Tree, but the `block_hashes` are used to keep track of the blocks in the tree (lookup is faster) and to map the block hash to its respective height in the tree. The `current index keeps track of the index of the last added block in the tree`
 
-There are two methods for adding blocks, `add` and `add_all`. Those are pretty much well documented. One thing i noticed is this piece:
+There are two methods for adding blocks, `add` and `add_all`. Those are pretty much well documented. One thing I noticed is this piece:
 
 ```rust 
  self.tree = match self.current_index {

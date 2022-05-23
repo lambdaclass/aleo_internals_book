@@ -26,7 +26,7 @@ A Constraint Synthesizer drives the generation of new constraints inside a Const
 
 ```rust
 /// Represents a constraint system which can have new variables
-/// allocated and constrains between them formed.
+/// allocated and constraints between them formed.
 pub trait ConstraintSystem<F: Field>: Sized {
     /// Represents the type of the "root" of this constraint system
     /// so that nested namespaces can minimize indirection.
@@ -106,7 +106,7 @@ pub trait ConstraintSystem<F: Field>: Sized {
 }
 ```
 
-A constraint system can have new variables (signals) allocated and constrains that are formed between them. 
+A constraint system can have new variables (signals) allocated and constraints that are formed between them. 
 Structs that implement the `ConstraintSystem` trait can:
 - Allocate private and public variables.
 - Enforce that  A * B = C, being A, B and C linear combinations with coefficients in a given field.
@@ -115,7 +115,7 @@ Structs that implement the `ConstraintSystem` trait can:
 
 ## Namespace
 
-Namespaces are a kind of constraint system which borrows a constraint system (pushing a namespace context) and, when dropped, pops out  the namespace context. 
+Namespaces are a kind of constraint system which borrows a constraint system (pushing a namespace context) and, when dropped, pops out the namespace context. 
 Namespaces can never be a root constraint system.
 
 The structure an input circuit is the following:
@@ -146,7 +146,7 @@ pub struct InputPublicVariables<N: Network> {
 
 Input public variables are structs that contain the *serial number* of an input record, the *input value commitment* that is the value of the commitments on the input record value, the *ledger root*, the *local transactions root* of type `N::TransactionID` and a *program id* of type `N::ProgramID`. The last are required in natively verifying an input circuit proof. However for verification in the outer circuit, these might be provided as witness.
 They can be created blank with default values using `InputVariables::blank` or with specific values using `InputVariables::new` passing the pertinent arguments for its building.
-The can be turned into field elements, this is a vector of `InnerScalarField`s.
+They can be turned into field elements, this is a vector of `InnerScalarField`.
 
 ### Input Private Variable
 
@@ -162,9 +162,9 @@ pub struct InputPrivateVariables<N: Network> {
 ```
 
 Input private variables are structs that contain an *input record*, a *ledger proof*, a *signature* and an *input value commitment randomness*, that is a `ProgramScalarField` (an alias for `PrimeField` trait).
-Like public variables the can be blank or not.
+Like public variables they can be blank or not.
 
-Well, now we have a better context. We know what it means to be an input circuit, what it does, who interact, and where it works. But, how does it generate a constraint?
+Well, now we have a better context. We know what it is an input circuit, what it does, its interactions, and where it works. But, how does it generate a constraint?
 
 ### Constraints Generation
 
@@ -177,7 +177,7 @@ To generate constraints means:
 5. Check that the input value commitment is derived correctly.
 6. Check that the signature is valid.
 
-For a more in-deph understanding of the constraints generation, this is the complete workflow:
+For a more in-depth understanding of the constraints generation, this is the complete workflow:
 
 #### Declare this variables as namespaces and field elements
 - Declare a ledger root.
@@ -253,7 +253,7 @@ For a more in-deph understanding of the constraints generation, this is the comp
 #### Check that the signature is valid.
 - Construct the signature with the candidate commitment and the input program id.
 - Convert the signature to bits.
-- Compute the signature the signature with the account signature parameters and the public key, the signature message, and the signature.
+- Compute the signature with the account signature parameters and the public key, the signature message, and the signature.
 - Check the signature verification 
 
 ## Inner Circuit
@@ -264,10 +264,6 @@ flowchart
 A[InnerCircuit<N>] --> B1[InputPublicVariables<N>]
 A[InnerCircuit<N>] --> B2[InputPrivateVariables<N>]
 ```
-
-
-
-
 
 ## Inner Circuit Generation
 
