@@ -4,6 +4,7 @@
 - [snarkVM](./snarkVM/snarkVM.md)
     - [dpc](./snarkVM/dpc/dpc.md)
       - [ledger](snarkVM/dpc/ledger.md)
+      - [block](snarkVM/dpc/block.md)
       - [account](snarkVM/dpc/account.md)
     - [virtual_machine](snarkVM/virtual_machine/introduction.md)
       - [execution](snarkVM/virtual_machine/execution.md)
