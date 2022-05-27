@@ -66,7 +66,7 @@ The juciest function is `mine_next_block` which performs the following steps:
  
 - Ensure that the new timestamp is ahead of the previous timestamp (it's more of a fix it if it is not ahead, it won't throw an error if it is behind).
 - Compute the block difficulty (currently uses the height as well as some of the genesis_block parameters)
-- Compute the cumulative weight $\sum_{b \in \text{canonical_chain}} u64_{\text{max}} / \text{difficulty}_b$ including the candidate block.
+- Compute the cumulative weight \\( \sum_{b \in \text{canonical_chain}} u64_{\text{max}} / \text{difficulty}_b \\) including the candidate block.
 - Construct the new block transactions. Build coinbase and block transactions containing the coinbase and the mempool transactions (there's a `VirtualMaching::execute` call behind the scenes)
 - Construct the block template.
 - Mine the next block.
