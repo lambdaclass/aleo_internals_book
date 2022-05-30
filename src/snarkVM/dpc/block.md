@@ -37,10 +37,15 @@ pub struct BlockHeaderMetadata {
 
 To be honest, the `BlockHeaderMetadata` is a glorified Dictionary/Map but it knows how to create the genesis block header and implements the `ToBytes` trait.
 
-Let's see the `BlockHeader` methods:
+Let's see the `BlockHeader` (interesting) methods:
 
 - `pub fn from(N::LedgerRoot, N::TransactionsRoot, BlockHeaderMetadata, N::PoSWNonce, PoSWProof<N>) -> Result<Self, BlockError>` is a constructor, and it also verifies the block header is well formed.
-- `pub fn is_valid(&self) -> bool`. It makes some assertions:
+- `pub fn is_valid(&self) -> bool`. It makes some assertions
+- `pub fn mine` and `pub fn mine_once_unchecked`: generates a new block and ensures its validity with the `is_valid` method (the unchecked version avoids doing this validation and calls the `prove_once_unchecked` method instead of the `mine` method).
+- `pub fn to_header_inclusion_proof`: it generates a proof from the block header tree.
+
+Back to the `is_valid` method, the assertions it makes are:
+-
     - The previous ledger root cannot be the `Default::default` value.
     - The transactions root cannot be the `Default::default` value. 
     - The nonce cannot be the `Default::default` value. 
@@ -51,19 +56,3 @@ This last item makes a call to `PoSW<N: Network>::verify_from_block_header(&self
 `fn verify(&self, difficulty_target: u64, inputs: &[N::InnerScalarField], proof: &PoSWProof<N>) -> bool` runs a few checks (PoSW difficulty target must be met, the proof type should not be "not hiding")
 
 **question**: what is *not hiding*
-
-TODO: change
-```rust
-// Ensure the proof is valid under the deprecated PoSW parameters.
-if !proof.verify(&self.verifying_key, inputs) {
-    return false;
-}
-
-true
-```
-for
-```rust
-// Ensure the proof is valid under the deprecated PoSW parameters.
-proof.verify(&self.verifying_key, inputs)
-```
-
