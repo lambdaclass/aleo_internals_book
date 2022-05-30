@@ -18,7 +18,8 @@ jobs:
       - name: Show mermaid version
         run: mdbook-mermaid --version
 
-      - uses: actions/checkout@v2
+      - name: Build book
+        run: mdbook build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
