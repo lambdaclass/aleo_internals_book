@@ -66,7 +66,7 @@ The juciest function is `mine_next_block` which performs the following steps:
  
 - Ensure that the new timestamp is ahead of the previous timestamp (it's more of a fix it if it is not ahead, it won't throw an error if it is behind).
 - Compute the block difficulty (currently uses the height as well as some of the genesis_block parameters)
-- Compute the cumulative weight $\sum_{b \in \text{canonical_chain}} u64_{\text{max}} / \text{difficulty}_b$ including the candidate block.
+- Compute the cumulative weight \\( \sum_{b \in \text{canonical_chain}} u64_{\text{max}} / \text{difficulty}_b \\) including the candidate block.
 - Construct the new block transactions. Build coinbase and block transactions containing the coinbase and the mempool transactions (there's a `VirtualMaching::execute` call behind the scenes)
 - Construct the block template.
 - Mine the next block.
@@ -232,6 +232,7 @@ pub(crate) struct Transitions<N: Network> {
 }
 ```
 As the LedgerTree, this is also a wrapper of a Merkle Tree used for storing a set of Transitions.
+Particularly, a single Transitions struct represents all the transitions within a transaction.
 
 IN FACT, **question**: Is this abstractable?
 
@@ -264,3 +265,51 @@ The method that differs a bit is the `to_local_proof` one, which gets the corres
         )
     }
 ```
+
+## MemoryPool
+
+The `MemoryPool` struct is used to keep track the list of unconfirmed transactions, waiting to be added to the block and to the chain. The struct actually contains a bit more info:
+
+```rust
+pub struct MemoryPool<N: Network> {
+    /// The pool of unconfirmed transactions.
+    transactions: HashMap<N::TransactionID, Transaction<N>>,
+    /// The list of unconfirmed serial numbers.
+    serial_numbers: HashSet<N::SerialNumber>,
+    /// The list of unconfirmed commitments.
+    commitments: HashSet<N::Commitment>,
+    /// The set of open requests.
+    #[allow(dead_code)]
+    requests: HashSet<Request<N>>,
+}
+```
+
+The api consists in adding and removing a transaction(s). The `add_transaction`
+also runs some validations on the transaction to be added. Particularly, one
+check you might have questions about is the
+`!transaction.value_balance().is_negative()` and the error message:
+
+```rust
+// Ensure the transaction does not attempt to mint new value.
+ensure!(
+    !transaction.value_balance().is_negative(),
+    "The unconfirmed transaction is attempting to mint new value"
+);
+```
+
+**Why is that if the transaction balance is negative, then it is trying to mint a
+new value?** Well, the only trasactions allowed to have negative balance are the coinbase_transactions, which means in fact that the transaction was minting a new value.
+
+## LedgerProof
+The `LedgerProof` is the composition of two other proofs, the `LocalProof` and the `RecordProof`. It provides getters and a class method to create dummy proofs (given a `LocalProof`, which can be created by using the `default()` method).
+
+## RecordProof
+The `RecordProof` is as well a composition of other proofs:
+- A `BlockHeaderInclusionProof`, which proves that the header of the block containing the commitment is in the header tree.
+- A `TransactionsInclusionProof` which proves that the transaction containing the commitment is included in its block's local transaction tree, and
+- A `LocalInclusionProof`, which proves that a commitment is included in a single Transaction, and it is created from a local transitions tree. It is build from two other proofs:
+    - A transaction inclusion proof, which proves the transition is included local transition tree of a transaction and
+    - A transition inclusion proof, which proves the given commitment is in the commitment tree of the transition.
+
+## LedgerRootInclusionProof
+The `LedgerRootInclusionProof` verifies that the canonical block chain's latest block is in the ledger_tree of blocks. You might think that this is pointless. However, this is probably used because the `Ledger` struct keeps the latest block's hash and height, and so you need to make sure it is actually in the ledger tree.

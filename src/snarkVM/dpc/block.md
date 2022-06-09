@@ -4,6 +4,13 @@
 This is a Merkle Tree wrapper, in particular it is static, which means you can only build a Merkle Tree out of a list of `Transaction<N>` but you cannot add new Transactions into the tree.
 And you can use it to make proofs of inclusion of the transaction in the set. This will be enough for us because once the block is created the transactions of the block will remain the same.
 
+To be considered valid, the `Transactions` struct should:
+- not be empty,
+- have all valid transactions
+- not have serial number duplicates
+- not have commitment duplicates
+- have one and only one coinbase transaction
+
 ## BlockHeader
 ```rust 
 pub struct BlockHeader<N: Network> {
@@ -37,10 +44,15 @@ pub struct BlockHeaderMetadata {
 
 To be honest, the `BlockHeaderMetadata` is a glorified Dictionary/Map but it knows how to create the genesis block header and implements the `ToBytes` trait.
 
-Let's see the `BlockHeader` methods:
+Let's see the `BlockHeader` (interesting) methods:
 
 - `pub fn from(N::LedgerRoot, N::TransactionsRoot, BlockHeaderMetadata, N::PoSWNonce, PoSWProof<N>) -> Result<Self, BlockError>` is a constructor, and it also verifies the block header is well formed.
-- `pub fn is_valid(&self) -> bool`. It makes some assertions:
+- `pub fn is_valid(&self) -> bool`. It makes some assertions
+- `pub fn mine` and `pub fn mine_once_unchecked`: generates a new block and ensures its validity with the `is_valid` method (the unchecked version avoids doing this validation and calls the `prove_once_unchecked` method instead of the `mine` method).
+- `pub fn to_header_inclusion_proof`: it generates a proof from the block header tree.
+
+Back to the `is_valid` method, the assertions it makes are:
+-
     - The previous ledger root cannot be the `Default::default` value.
     - The transactions root cannot be the `Default::default` value. 
     - The nonce cannot be the `Default::default` value. 
@@ -52,18 +64,55 @@ This last item makes a call to `PoSW<N: Network>::verify_from_block_header(&self
 
 **question**: what is *not hiding*
 
-TODO: change
+## Block
+The block struct is defined as follows:
+
 ```rust
-// Ensure the proof is valid under the deprecated PoSW parameters.
-if !proof.verify(&self.verifying_key, inputs) {
-    return false;
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Block<N: Network> {
+    /// Hash of this block.
+    block_hash: N::BlockHash,
+    /// Hash of the previous block.
+    previous_block_hash: N::BlockHash,
+    /// The block header containing the state of the ledger at this block.
+    header: BlockHeader<N>,
+    /// The block transactions.
+    transactions: Transactions<N>,
 }
-
-true
-```
-for
-```rust
-// Ensure the proof is valid under the deprecated PoSW parameters.
-proof.verify(&self.verifying_key, inputs)
 ```
 
+Leaving the getters and small helper functions aside, we'd like to take a look at:
+- `mine` initializes a new block from a given template
+- `new_genesis` initializes a new genesis block with one coinbase transaction
+- `from` initializes a new block from a given previous hash, header and transactions list
+- `is_valid` is a helper function that checks whether the block is well formed
+- `block_reward` is a helper function that returns the block reward for the given block height
+
+### `mine`
+The mine function is quite simple, it verifies the set of transactions in the template is not empty and after that it mines the header and together with the previous_block_hash and the transaction set it calls the `from` method to take care of the rest
+
+### `new_genesis`
+It begins by computing the coinbase transaction and using that , and the coinbase parameters (default ledger proof, block_height, block_timestamp, difficulty_target, cumulative_weight, a clean `LedgerTree`, an array with the coinbase transaction and the coinbase record). Using that it mines the block (using the `mine` method) and ensures the mined block is actually a genesis block.
+
+### `from`
+The `from` method computes the block_hash, builds the block struct using the hash and the provided parameters and ensures the built block is valid.
+
+### `is_valid`
+The `is_valid` method runs a few assertions:
+
+- check the previous block hash is well_formed. This means that the previous block hash should point to the correct block
+- checks the header is valid using the `BlockHeader::is_valid` method
+- checks the transactions are valid using the `Transactions::is_valid` method
+- checks the header transactions root is the same as the `Transactions` transaction root
+- ensures the coinbase reward is less than the block reward and the net balance of the transactions is more than the block reward
+
+### `block_reward`
+This method calculates the reward a mined block returns.
+
+- If this is the genesis block, it returns `N::ALEO_STARTING_SUPPLY_IN_CREDITS` credits.
+- Otherwise it makes a halving calculation. 
+    - It estimates the amount of blocks mined in a 3 year period (4,730,400 blocks aprox.). Let's call it \\( K \\).
+    - Based on that it separates the blocks in 3:
+        - Blocks \\( 1 \\) to \\( K \\): gets \\( 100 \\) CREDITS 
+        - Blocks \\( K+1 \\) to \\( 2*K \\): gets \\( 100/2 \\) = \\( 50 \\) CREDITS
+        - Blocks \\( 2*K+1 \\) and onwards: gets \\( 100/4 \\) = \\( 25 \\) CREDITS
